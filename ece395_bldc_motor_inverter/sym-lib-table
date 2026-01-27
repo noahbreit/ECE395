@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Driver_Motor_Analog")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/Driver_Motor_Analog.kicad_sym")(options "")(descr "Custom Library"))
+)

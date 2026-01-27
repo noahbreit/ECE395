@@ -621,6 +621,10 @@
     [
       "62cb819b-1e2d-4f30-b3e3-db70eea38367",
       "Motor Interface"
+    ],
+    [
+      "6a2a2e14-09bf-436a-9824-e29a2b10736d",
+      "Microcontroller"
     ]
   ],
   "text_variables": {}
