@@ -451,7 +451,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "ece395_bldc_motor_inverter.kicad_pro",
+    "filename": "BLDC_Motor_Driver.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -616,11 +616,19 @@
     ],
     [
       "054fecbe-767b-4785-90e3-b2e0fc279cf8",
-      "HBRIDGE_TEMPLATE"
+      "H-Bridge-U"
     ],
     [
-      "62cb819b-1e2d-4f30-b3e3-db70eea38367",
-      "Motor Interface"
+      "8fb5642c-0b82-4b72-9dde-8b225c5513a9",
+      "H-Bridge-V"
+    ],
+    [
+      "cb6f04f7-e6f4-4784-9446-e8813a7af6f7",
+      "H-Bridge-W"
+    ],
+    [
+      "2755f051-9e97-43c6-ab3e-e3fd090c273a",
+      "H-Bridge-Y"
     ],
     [
       "6a2a2e14-09bf-436a-9824-e29a2b10736d",

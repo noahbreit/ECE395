@@ -710,24 +710,6 @@
 			(pin power_out line
 				(at 10.16 45.72 270)
 				(length 2.54)
-				(name "SW"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "17"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin power_out line
-				(at 12.7 45.72 270)
-				(length 2.54)
 				(name "V_{BUCK}"
 					(effects
 						(font
@@ -743,8 +725,26 @@
 					)
 				)
 			)
+			(pin power_out line
+				(at 12.7 45.72 270)
+				(length 2.54)
+				(name "SW"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "17"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin passive line
-				(at 22.86 33.02 180)
+				(at 22.86 38.1 180)
 				(length 2.54)
 				(name "BS_UX1"
 					(effects
@@ -762,7 +762,7 @@
 				)
 			)
 			(pin output line
-				(at 22.86 30.48 180)
+				(at 22.86 35.56 180)
 				(length 2.54)
 				(name "HS_UX1"
 					(effects
@@ -780,7 +780,7 @@
 				)
 			)
 			(pin input line
-				(at 22.86 27.94 180)
+				(at 22.86 33.02 180)
 				(length 2.54)
 				(name "BM_UX1"
 					(effects
@@ -798,7 +798,7 @@
 				)
 			)
 			(pin output line
-				(at 22.86 25.4 180)
+				(at 22.86 30.48 180)
 				(length 2.54)
 				(name "LS_UX1"
 					(effects
@@ -815,224 +815,8 @@
 					)
 				)
 			)
-			(pin passive line
-				(at 22.86 20.32 180)
-				(length 2.54)
-				(name "BS_VX2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "41"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 17.78 180)
-				(length 2.54)
-				(name "HS_VX2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "42"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
 			(pin input line
-				(at 22.86 15.24 180)
-				(length 2.54)
-				(name "BM_VX2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "43"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 12.7 180)
-				(length 2.54)
-				(name "LS_VX2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "44"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 22.86 7.62 180)
-				(length 2.54)
-				(name "BS_WY1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "40"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 5.08 180)
-				(length 2.54)
-				(name "HS_WY1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "39"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 22.86 2.54 180)
-				(length 2.54)
-				(name "BM_WY1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "38"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 0 180)
-				(length 2.54)
-				(name "LS_WY1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "37"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 22.86 -5.08 180)
-				(length 2.54)
-				(name "BS_Y2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "29"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 -7.62 180)
-				(length 2.54)
-				(name "HS_Y2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "30"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 22.86 -10.16 180)
-				(length 2.54)
-				(name "BM_Y2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "31"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin output line
-				(at 22.86 -12.7 180)
-				(length 2.54)
-				(name "LS_Y2"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "32"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin input line
-				(at 22.86 -20.32 180)
+				(at 22.86 25.4 180)
 				(length 2.54)
 				(name "CSP0"
 					(effects
@@ -1050,7 +834,7 @@
 				)
 			)
 			(pin input line
-				(at 22.86 -22.86 180)
+				(at 22.86 22.86 180)
 				(length 2.54)
 				(name "CSN0"
 					(effects
@@ -1067,8 +851,80 @@
 					)
 				)
 			)
+			(pin passive line
+				(at 22.86 17.78 180)
+				(length 2.54)
+				(name "BS_VX2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "41"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 15.24 180)
+				(length 2.54)
+				(name "HS_VX2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "42"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin input line
-				(at 22.86 -25.4 180)
+				(at 22.86 12.7 180)
+				(length 2.54)
+				(name "BM_VX2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "43"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 10.16 180)
+				(length 2.54)
+				(name "LS_VX2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "44"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 5.08 180)
 				(length 2.54)
 				(name "CSP1"
 					(effects
@@ -1086,7 +942,7 @@
 				)
 			)
 			(pin input line
-				(at 22.86 -27.94 180)
+				(at 22.86 2.54 180)
 				(length 2.54)
 				(name "CSN1"
 					(effects
@@ -1103,8 +959,80 @@
 					)
 				)
 			)
+			(pin passive line
+				(at 22.86 -2.54 180)
+				(length 2.54)
+				(name "BS_WY1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "40"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -5.08 180)
+				(length 2.54)
+				(name "HS_WY1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "39"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
 			(pin input line
-				(at 22.86 -30.48 180)
+				(at 22.86 -7.62 180)
+				(length 2.54)
+				(name "BM_WY1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "38"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -10.16 180)
+				(length 2.54)
+				(name "LS_WY1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "37"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -15.24 180)
 				(length 2.54)
 				(name "CSP2"
 					(effects
@@ -1122,7 +1050,7 @@
 				)
 			)
 			(pin input line
-				(at 22.86 -33.02 180)
+				(at 22.86 -17.78 180)
 				(length 2.54)
 				(name "CSN2"
 					(effects
@@ -1132,6 +1060,78 @@
 					)
 				)
 				(number "35"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 22.86 -22.86 180)
+				(length 2.54)
+				(name "BS_Y2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "29"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -25.4 180)
+				(length 2.54)
+				(name "HS_Y2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "30"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 22.86 -27.94 180)
+				(length 2.54)
+				(name "BM_Y2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "31"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin output line
+				(at 22.86 -30.48 180)
+				(length 2.54)
+				(name "LS_Y2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "32"
 					(effects
 						(font
 							(size 1.27 1.27)
