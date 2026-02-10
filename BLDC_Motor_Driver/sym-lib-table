@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "Driver_Motor_Analog")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/Driver_Motor_Analog.kicad_sym")(options "")(descr "Custom Library"))
   (lib (name "Buffer_Texas")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/Buffer_Texas.kicad_sym")(options "")(descr "Custom Library"))
+  (lib (name "Regulator_Texas")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/Regulator_Texas.kicad_sym")(options "")(descr "Custom Library"))
 )
