@@ -1830,6 +1830,18 @@
 		)
 	)
 	(rectangle
+		(start 92.71 68.58)
+		(end 125.73 111.76)
+		(stroke
+			(width 0)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 3a887d9d-01b6-470f-923d-ce7e3b27c1b0)
+	)
+	(rectangle
 		(start 16.51 15.24)
 		(end 49.53 66.04)
 		(stroke
@@ -1952,6 +1964,19 @@
 			(justify left bottom)
 		)
 		(uuid "d13ca886-d8ff-4502-90c7-5aecb033f696")
+	)
+	(text "Power Testpoints"
+		(exclude_from_sim no)
+		(at 93.345 69.85 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 0.4)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "e5fec1f5-5ea5-4d17-857e-483d4aed3427")
 	)
 	(junction
 		(at 219.71 34.29)
@@ -2091,6 +2116,16 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 95.25) (xy 104.14 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03aadb6e-3a3f-47ba-8835-8eda977b82f8")
+	)
+	(wire
+		(pts
 			(xy 59.69 86.36) (xy 67.31 86.36)
 		)
 		(stroke
@@ -2168,6 +2203,16 @@
 			(type default)
 		)
 		(uuid "15ebef34-a85c-449d-b970-1cad8045f99f")
+	)
+	(wire
+		(pts
+			(xy 104.14 90.17) (xy 106.68 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1939b72c-55c1-44e1-9f6a-c58c2f3eb3c3")
 	)
 	(wire
 		(pts
@@ -2561,6 +2606,16 @@
 	)
 	(wire
 		(pts
+			(xy 106.68 92.71) (xy 104.14 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "780bf463-4b17-4d5e-ba24-df9ef64895dd")
+	)
+	(wire
+		(pts
 			(xy 71.12 38.1) (xy 71.12 33.02)
 		)
 		(stroke
@@ -2661,6 +2716,16 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 87.63) (xy 106.68 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "afcfd992-b36f-410b-bc3f-8b171591638c")
+	)
+	(wire
+		(pts
 			(xy 58.42 43.18) (xy 58.42 44.45)
 		)
 		(stroke
@@ -2678,6 +2743,16 @@
 			(type default)
 		)
 		(uuid "b51796a6-2952-410d-bdf7-34f202e21eee")
+	)
+	(wire
+		(pts
+			(xy 104.14 85.09) (xy 104.14 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9d0e878-ef57-4753-abf3-8e5a6c7c87c4")
 	)
 	(wire
 		(pts
@@ -2781,6 +2856,16 @@
 	)
 	(wire
 		(pts
+			(xy 106.68 85.09) (xy 104.14 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9a0f4dc-a17f-40ce-b2c7-1a2509601596")
+	)
+	(wire
+		(pts
 			(xy 204.47 44.45) (xy 204.47 45.72)
 		)
 		(stroke
@@ -2869,6 +2954,17 @@
 		)
 		(uuid "e37dc5ed-9d72-4ecc-b64d-4ce2f9f25453")
 	)
+	(hierarchical_label "5V_COM"
+		(shape bidirectional)
+		(at 104.14 87.63 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "34f3c5b0-62a4-49f5-9c41-e4291ea436c3")
+	)
 	(hierarchical_label "5V_REG"
 		(shape input)
 		(at 198.12 34.29 180)
@@ -2912,6 +3008,17 @@
 			(justify right)
 		)
 		(uuid "da5bb926-14e1-4670-abb5-513c2e4666aa")
+	)
+	(hierarchical_label "5V_REG"
+		(shape bidirectional)
+		(at 104.14 90.17 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "dde1e1f4-4e2f-45d9-a762-7a7e15dfc933")
 	)
 	(hierarchical_label "USB_POWER"
 		(shape input)
@@ -3602,6 +3709,73 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 104.14 95.25 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3d1743f6-2417-4b7a-8180-97d3cce04f10")
+		(property "Reference" "#PWR0711"
+			(at 104.14 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 104.14 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 104.14 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3f4b3ee0-0db2-44a4-abdf-4705c4793882")
+		)
+		(instances
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cc03d52c-49b6-4460-8b58-76a2106de344"
+					(reference "#PWR0711")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 58.42 39.37 0)
 		(mirror y)
@@ -3955,6 +4129,72 @@
 			(project "BLDC_Motor_Driver"
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cc03d52c-49b6-4460-8b58-76a2106de344"
 					(reference "#PWR0707")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 104.14 83.82 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7957e520-4513-442f-ad9a-6c2975507f86")
+		(property "Reference" "#PWR0710"
+			(at 104.14 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 104.14 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 104.14 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 104.14 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 104.14 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7555aeb3-f7d5-4c28-9c88-8d47adb0b1ff")
+		)
+		(instances
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cc03d52c-49b6-4460-8b58-76a2106de344"
+					(reference "#PWR0710")
 					(unit 1)
 				)
 			)
