@@ -615,28 +615,32 @@
       "Root"
     ],
     [
-      "054fecbe-767b-4785-90e3-b2e0fc279cf8",
-      "H-Bridge-U"
-    ],
-    [
-      "8fb5642c-0b82-4b72-9dde-8b225c5513a9",
-      "H-Bridge-V"
-    ],
-    [
-      "cb6f04f7-e6f4-4784-9446-e8813a7af6f7",
-      "H-Bridge-W"
-    ],
-    [
-      "2755f051-9e97-43c6-ab3e-e3fd090c273a",
-      "H-Bridge-Y"
-    ],
-    [
       "6a2a2e14-09bf-436a-9824-e29a2b10736d",
       "Microcontroller"
     ],
     [
       "cc03d52c-49b6-4460-8b58-76a2106de344",
       "Power"
+    ],
+    [
+      "9a7f02cf-afb2-4d66-9ae7-4e30a98b6980",
+      "Gate-Driver"
+    ],
+    [
+      "4b4367ba-42d9-462c-bf20-675b6fbf5ab3",
+      "H-Bridge-U"
+    ],
+    [
+      "82226e03-7285-44d6-af19-d97077dd2091",
+      "H-Bridge-V"
+    ],
+    [
+      "51dee69d-31d1-4b65-b804-890ce69bca2c",
+      "H-Bridge-W"
+    ],
+    [
+      "4805f1a9-48b1-4ad6-b61c-b6588e03a2e8",
+      "H-Bridge-Y"
     ]
   ],
   "text_variables": {}

@@ -1309,7 +1309,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "15f1ffee-26d5-4daa-84bf-7b4e723f73c6")
-		(property "Reference" "#PWR01"
+		(property "Reference" "#PWR034"
 			(at 128.27 139.7 0)
 			(effects
 				(font
@@ -1355,24 +1355,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "c49e6026-e00c-4d16-b3d1-dd0a3a085bc2")
+			(uuid "7a176255-cac9-404c-8209-8e78a87e81dc")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "#PWR01")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "#PWR049")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "#PWR0502")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "#PWR034")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "#PWR0302")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "#PWR044")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "#PWR0602")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "#PWR039")
 					(unit 1)
 				)
 			)
@@ -1387,7 +1387,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1fd62213-7b95-4016-a0c1-69bf9ae1efa6")
-		(property "Reference" "R201"
+		(property "Reference" "R7"
 			(at 127 125.73 0)
 			(effects
 				(font
@@ -1433,27 +1433,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "8aea31c4-47b3-43ea-b383-4f423e2f0846")
+			(uuid "e4cd7336-070b-4b3f-b485-f93d4546aba5")
 		)
 		(pin "1"
-			(uuid "cda37f11-fdc8-4514-9047-c2e4b4dfd6ef")
+			(uuid "7156c16f-22b4-40ef-b117-a39bebc377fb")
 		)
 		(instances
-			(project ""
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "R201")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "R10")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "R501")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "R7")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "R301")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "R9")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "R401")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -1468,7 +1468,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "200c4de1-df6f-4fb4-9bb7-3aca08fe4080")
-		(property "Reference" "Q1"
+		(property "Reference" "Q3"
 			(at 130.81 95.25 0)
 			(effects
 				(font
@@ -1517,36 +1517,36 @@
 			)
 		)
 		(pin "3"
-			(uuid "fefd098f-3e1e-41fb-a723-6ec09f0c5a69")
+			(uuid "e9a67460-1879-4fbd-b748-88ede40c3792")
 		)
 		(pin "2"
-			(uuid "0f2901c4-a409-4a47-bd86-3d5e6367ccdd")
+			(uuid "a780039f-162d-4f71-b33b-b710bb1654ed")
 		)
 		(pin "1"
-			(uuid "b216ddfa-9c78-46c2-8cb8-354a4927a0f1")
+			(uuid "0261354e-1c01-42f6-b77d-0554ed6caf57")
 		)
 		(pin "5"
-			(uuid "d70c4f17-e3e8-4bfb-8820-8c84bdec1448")
+			(uuid "d938f8cc-6b41-4c25-a0b1-0e659e2e57e3")
 		)
 		(pin "4"
-			(uuid "62404d0e-0487-4322-a17c-ce2a29952abd")
+			(uuid "b179859e-c90c-4f8f-b45d-e174019b8d44")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "Q1")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "Q9")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "Q501")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "Q3")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "Q301")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "Q7")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "Q601")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "Q5")
 					(unit 1)
 				)
 			)
@@ -1561,7 +1561,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "21858e77-07f7-4a68-88e1-02220d973fad")
-		(property "Reference" "C501"
+		(property "Reference" "C23"
 			(at 152.4 93.98 0)
 			(effects
 				(font
@@ -1607,27 +1607,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "d30707cc-1968-406c-9550-95662c1fb88d")
+			(uuid "0ca67df0-7258-4b9a-8424-b081a9db3249")
 		)
 		(pin "1"
-			(uuid "f78a0562-3d29-4418-b0ca-257747298625")
+			(uuid "0b7b86fc-d5ec-4fa0-af14-e76edab36d30")
 		)
 		(instances
-			(project ""
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "C501")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "C35")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "C501")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "C23")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "C301")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "C31")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "C601")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "C27")
 					(unit 1)
 				)
 			)
@@ -1642,7 +1642,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "2d322a18-1fd2-4cfe-b33d-b20586e91146")
-		(property "Reference" "Q2"
+		(property "Reference" "Q4"
 			(at 130.81 110.49 0)
 			(effects
 				(font
@@ -1691,36 +1691,36 @@
 			)
 		)
 		(pin "3"
-			(uuid "b359c296-c537-4227-af22-fb9342b316df")
+			(uuid "bf920b84-67e1-40a7-aafb-242b69f07fec")
 		)
 		(pin "2"
-			(uuid "16094813-be2d-4ca2-9a89-fe66ff8d46bd")
+			(uuid "b4a319f1-4da7-4169-a2e8-3d4e8b3db3b2")
 		)
 		(pin "1"
-			(uuid "664745da-a6c1-4da6-8ecf-8c570d5caa65")
+			(uuid "01450936-1d80-422b-a64e-7ee848d050ad")
 		)
 		(pin "5"
-			(uuid "111efe27-9b46-434f-b717-5627b9de3b49")
+			(uuid "65ff355e-6611-4a08-8231-a530841e3616")
 		)
 		(pin "4"
-			(uuid "e4c4b3fc-1d03-48ec-a77b-f9ee3d3e99b4")
+			(uuid "d62733cf-2ea9-4dce-b6a2-0d985312cd38")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "Q2")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "Q10")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "Q502")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "Q4")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "Q302")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "Q8")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "Q602")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "Q6")
 					(unit 1)
 				)
 			)
@@ -1735,7 +1735,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "326dde0d-7998-4064-837b-81976baddb1f")
-		(property "Reference" "#PWR02"
+		(property "Reference" "#PWR033"
 			(at 128.27 92.71 0)
 			(effects
 				(font
@@ -1780,24 +1780,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "661ed556-47dc-4c6d-8306-e1d31a0b3cb6")
+			(uuid "b20cf9dc-be9a-4bb6-a0e3-b497c61f154b")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "#PWR02")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "#PWR048")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "#PWR0501")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "#PWR033")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "#PWR0301")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "#PWR043")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "#PWR0601")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "#PWR038")
 					(unit 1)
 				)
 			)
@@ -1812,7 +1812,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "503e8ff5-b55a-4937-acf2-b8abb8d285ab")
-		(property "Reference" "C203"
+		(property "Reference" "C24"
 			(at 152.4 107.95 0)
 			(effects
 				(font
@@ -1858,27 +1858,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "8dcd0e29-2658-41a4-9fdc-4d8e43b7f48b")
+			(uuid "509bdcc3-b38a-4a71-b163-5bbf9bef52a5")
 		)
 		(pin "1"
-			(uuid "9725da5c-c97a-48fe-a8b8-1a241eae2df0")
+			(uuid "e4e21a72-4ba0-4196-98b2-5a626349327f")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "C203")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "C36")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "C502")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "C24")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "C302")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "C32")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "C602")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "C28")
 					(unit 1)
 				)
 			)
@@ -1893,7 +1893,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "5c7d7489-3094-4ce4-a16c-6936eec820f2")
-		(property "Reference" "C202"
+		(property "Reference" "C25"
 			(at 163.83 93.98 0)
 			(effects
 				(font
@@ -1939,27 +1939,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "39f71bf2-422d-4e65-aa0a-715e94cdd58b")
+			(uuid "5831ce79-f03a-41a3-9408-04f1b2c4e1eb")
 		)
 		(pin "1"
-			(uuid "9547e6bf-d1d7-4e62-a3ef-1c5e92b428c2")
+			(uuid "20ec3bdc-8248-4312-a3ee-35d7a6af934b")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "C202")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "C37")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "C503")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "C25")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "C303")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "C33")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "C603")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "C29")
 					(unit 1)
 				)
 			)
@@ -1975,7 +1975,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "92273023-d3da-4bae-82d9-f16363c8869c")
-		(property "Reference" "#PWR0203"
+		(property "Reference" "#PWR036"
 			(at 149.86 120.65 0)
 			(effects
 				(font
@@ -2021,24 +2021,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "dd0a004f-82d1-4d35-b560-3811901ec7f8")
+			(uuid "541f9994-3eb8-48fd-80f2-fe7f0a15255f")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "#PWR0203")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "#PWR051")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "#PWR0504")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "#PWR036")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "#PWR0304")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "#PWR046")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "#PWR0604")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "#PWR041")
 					(unit 1)
 				)
 			)
@@ -2054,7 +2054,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d9dd084a-1eaf-4cbe-b3ab-dd05a5a92810")
-		(property "Reference" "#PWR0201"
+		(property "Reference" "#PWR035"
 			(at 149.86 106.68 0)
 			(effects
 				(font
@@ -2100,24 +2100,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "ff9a45c6-11b0-4316-b3c7-b9753fa2ea99")
+			(uuid "68357d39-6d1e-4638-931f-e59cf6b6af19")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "#PWR0201")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "#PWR050")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "#PWR0503")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "#PWR035")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "#PWR0303")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "#PWR045")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "#PWR0603")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "#PWR040")
 					(unit 1)
 				)
 			)
@@ -2133,7 +2133,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ea48bb28-8b24-4c58-bb3f-4d9a68e8692f")
-		(property "Reference" "#PWR0202"
+		(property "Reference" "#PWR037"
 			(at 161.29 106.68 0)
 			(effects
 				(font
@@ -2179,24 +2179,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "666aab59-5fec-4947-b41e-a4853bb3430e")
+			(uuid "5882b118-4910-4311-bc3a-c22bc64798f6")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "#PWR0202")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "#PWR052")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "#PWR0505")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "#PWR037")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "#PWR0305")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "#PWR047")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "#PWR0605")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "#PWR042")
 					(unit 1)
 				)
 			)
@@ -2211,7 +2211,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "f840ff92-6af0-4523-8a25-02e41fd19e93")
-		(property "Reference" "C201"
+		(property "Reference" "C26"
 			(at 175.26 93.98 0)
 			(effects
 				(font
@@ -2257,27 +2257,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "eb781d41-5cc2-436c-a634-eec9d371b79d")
+			(uuid "ac885d09-f595-4dc7-a65d-05d17a613e59")
 		)
 		(pin "1"
-			(uuid "a7fc7996-f31a-4468-8a02-bcc4ac2f5a0c")
+			(uuid "9e58f488-b2ba-4a42-a83a-411f1973c999")
 		)
 		(instances
-			(project "ece395_bldc_motor_inverter"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/054fecbe-767b-4785-90e3-b2e0fc279cf8"
-					(reference "C201")
+			(project "BLDC_Motor_Driver"
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
+					(reference "C38")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/2755f051-9e97-43c6-ab3e-e3fd090c273a"
-					(reference "C504")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
+					(reference "C26")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/8fb5642c-0b82-4b72-9dde-8b225c5513a9"
-					(reference "C304")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/51dee69d-31d1-4b65-b804-890ce69bca2c"
+					(reference "C34")
 					(unit 1)
 				)
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/cb6f04f7-e6f4-4784-9446-e8813a7af6f7"
-					(reference "C401")
+				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/82226e03-7285-44d6-af19-d97077dd2091"
+					(reference "C30")
 					(unit 1)
 				)
 			)
