@@ -2456,7 +2456,7 @@
 		)
 		(uuid "97016ab7-6d12-49a2-a004-18f813e52d73")
 	)
-	(hierarchical_label "3.3V_REG"
+	(hierarchical_label "3V3_REG"
 		(shape output)
 		(at 77.47 83.82 90)
 		(effects
