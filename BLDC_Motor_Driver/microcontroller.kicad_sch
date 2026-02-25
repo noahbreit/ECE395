@@ -2733,6 +2733,17 @@
 		)
 		(uuid "474594c0-dd0c-452a-835b-d04528943bc6")
 	)
+	(hierarchical_label "DRIVER_DRV_EN"
+		(shape output)
+		(at 34.29 69.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "49e7c1d8-40b0-4e71-a6ce-567dc0ff6336")
+	)
 	(hierarchical_label "I2C3_SDA"
 		(shape bidirectional)
 		(at 34.29 72.39 180)
@@ -2828,17 +2839,6 @@
 		)
 		(uuid "6ccccc92-e5d6-4abf-b223-a24c13567ebc")
 	)
-	(hierarchical_label "PB3"
-		(shape bidirectional)
-		(at 34.29 69.85 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "7e4901c3-0a48-4f51-a983-874e43242cb6")
-	)
 	(hierarchical_label "DRIVER_CS"
 		(shape output)
 		(at 34.29 92.71 180)
@@ -2850,6 +2850,17 @@
 			(justify right)
 		)
 		(uuid "7f172c14-3993-4161-a959-1dccaea5e2bf")
+	)
+	(hierarchical_label "DRIVER_RSTN"
+		(shape output)
+		(at 69.85 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7f50e360-fe74-41c6-bf9f-ba36627887a7")
 	)
 	(hierarchical_label "SPI1_MISO"
 		(shape input)
@@ -2863,16 +2874,16 @@
 		)
 		(uuid "85adca57-6c13-4916-bde6-70e54fdda546")
 	)
-	(hierarchical_label "PB8"
-		(shape bidirectional)
-		(at 34.29 82.55 180)
+	(hierarchical_label "DRIVER_FAULTN"
+		(shape input)
+		(at 34.29 85.09 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right)
 		)
-		(uuid "8e63b34d-b287-49b6-b194-0debef1ab3ff")
+		(uuid "a5ccf2ec-a3bb-4b34-8985-6a1e1a572e10")
 	)
 	(hierarchical_label "PC14"
 		(shape bidirectional)
@@ -2919,17 +2930,6 @@
 			(justify left)
 		)
 		(uuid "b6f3ac84-4902-47c8-99a0-c9869c279215")
-	)
-	(hierarchical_label "PB9"
-		(shape bidirectional)
-		(at 34.29 85.09 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "b7031f89-2f7a-4f95-b1de-ca13586798b3")
 	)
 	(hierarchical_label "LED_GREEN"
 		(shape output)
@@ -3011,17 +3011,16 @@
 		)
 		(uuid "e1e387db-3f1c-4a1e-86d9-2f47f85d8727")
 	)
-	(hierarchical_label "PA15"
-		(shape bidirectional)
-		(at 69.85 74.93 0)
+	(hierarchical_label "DRIVER_WAKE"
+		(shape output)
+		(at 34.29 82.55 180)
 		(effects
 			(font
 				(size 1.27 1.27)
-				(thickness 0.1588)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "e701c476-f064-4f5b-aa47-ffc5503d74c1")
+		(uuid "e687ae99-da45-4570-afda-95f56ae7be6c")
 	)
 	(hierarchical_label "USART2_RX"
 		(shape input)
