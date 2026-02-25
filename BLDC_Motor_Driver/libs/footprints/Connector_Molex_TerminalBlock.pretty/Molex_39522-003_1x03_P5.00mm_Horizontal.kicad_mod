@@ -1,0 +1,139 @@
+(footprint "Molex_39522-003_1x03_P5.00mm_Horizontal"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "5.00mm Pitch Eurostyle Right-Angle PCB Header, 3 Circuits")
+	(tags "395221003 Molex")
+	(property "Reference" "REF**"
+		(at 5 4 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "dbc97fd9-90ec-44a8-9112-037ee2f3df69")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "Molex_39522-003_1x03_P5.00mm_Horizontal"
+		(at 5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "f57d8478-f16c-4ba7-9679-254450d661e7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://www.molex.com/en-us/products/part-detail/395221003"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "768451ed-fc22-4979-82a7-1d50d9c999cb")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "39ad969f-9b64-47f0-85a6-1d87243ad486")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_rect
+		(start -3.6233 -2.127)
+		(end 13.6233 10.115799)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "5d3cf79d-bccb-48f5-b2bd-1c9fc5072e4d")
+	)
+	(fp_rect
+		(start -3.7503 -2.254)
+		(end 13.7503 10.242799)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "b6555fc8-116e-4afd-8255-f0cafc79b588")
+	)
+	(fp_rect
+		(start -3.4963 -2)
+		(end 13.4963 9.988799)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "c827637c-9189-42a8-ba4d-05e1a5c18d07")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "85c9263c-f1e8-4079-98ab-5baf62fbdf95")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole roundrect
+		(at 0 0)
+		(size 2.1082 2.1082)
+		(drill 1.6002)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.1185845745)
+		(uuid "3e3dfc2f-4fef-4a56-bd42-437f52b21a5d")
+	)
+	(pad "2" thru_hole circle
+		(at 5 0)
+		(size 2.1082 2.1082)
+		(drill 1.6002)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "5555770e-17c4-4205-80f3-0b72a27ba7ac")
+	)
+	(pad "3" thru_hole circle
+		(at 10 0)
+		(size 2.1082 2.1082)
+		(drill 1.6002)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "1b92eadb-51e7-4bd5-a23f-714ed4d5d562")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/libs/3dmodels/Connector_Molex_TerminalBlock.3dshapes/Molex_39522-003_1x03_P5.00mm_Horizontal.stp"
+		(offset
+			(xyz 5 -9.9 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 -0 -0)
+		)
+	)
+)

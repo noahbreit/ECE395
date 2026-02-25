@@ -1,5 +1,6 @@
 (fp_lib_table
   (version 7)
+  (lib (name "Connector_Molex_TerminalBlock")(type "KiCad")(uri "${KIPRJMOD}/libs/footprints/Connector_Molex_TerminalBlock.pretty")(options "")(descr ""))
   (lib (name "Inductor_Vishay")(type "KiCad")(uri "${KIPRJMOD}/libs/footprints/Inductor_Vishay.pretty")(options "")(descr ""))
   (lib (name "Package_QFN")(type "KiCad")(uri "${KIPRJMOD}/libs/footprints/Package_QFN.pretty")(options "")(descr ""))
 )

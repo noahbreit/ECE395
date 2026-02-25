@@ -1,5 +1,5 @@
 #Ignore Files
-*.sch-bak
+*sch-bak
 _autosave-*
 .DS_Store
 *fp-info-cache
