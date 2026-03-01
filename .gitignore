@@ -7,3 +7,4 @@ _autosave-*
 *.kicad_prl
 *.bak
 *.lck
+*.log
