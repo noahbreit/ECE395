@@ -7245,7 +7245,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.digikey.com/en/products/detail/abracon-llc/ASPI-6045S-270M-T/2343395"
+		(property "Datasheet" "~"
 			(at 22.86 173.99 0)
 			(effects
 				(font
@@ -9066,7 +9066,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "Resistor, US symbol"
 			(at 128.27 149.86 0)
 			(effects
 				(font
