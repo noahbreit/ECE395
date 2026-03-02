@@ -5512,6 +5512,17 @@
 		)
 		(uuid "5f1596cf-2610-4dd6-8f13-0eee3aa11a10")
 	)
+	(hierarchical_label "3V3_REG"
+		(shape input)
+		(at 104.14 179.07 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "60214c22-2316-4666-8b56-9e9dec73637c")
+	)
 	(hierarchical_label "DRIVER_FAULTN"
 		(shape output)
 		(at 40.64 59.69 180)
@@ -5522,6 +5533,17 @@
 			(justify right)
 		)
 		(uuid "630629e0-0db2-43d4-a3a1-7db680afd904")
+	)
+	(hierarchical_label "3V3_REG"
+		(shape input)
+		(at 104.14 153.67 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "6449f358-e86d-4799-8615-7973ec9f9813")
 	)
 	(hierarchical_label "ENC_A{slash}TXEN"
 		(shape output)
@@ -5566,28 +5588,6 @@
 			(justify right)
 		)
 		(uuid "757752a5-505b-4b81-a716-54a88d3cbcf0")
-	)
-	(hierarchical_label "36V_VIN"
-		(shape input)
-		(at 104.14 153.67 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "77374657-567d-4406-ade0-35e87fa32961")
-	)
-	(hierarchical_label "36V_VIN"
-		(shape input)
-		(at 104.14 179.07 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "7b838b5d-c709-4a4c-807c-30fb6c3e03a0")
 	)
 	(hierarchical_label "DRIVER_VBUCK"
 		(shape output)
