@@ -7295,7 +7295,7 @@
 		)
 		(uuid "fc3abe6d-02bc-4db6-8c3d-940b02ac6a06")
 	)
-	(label "MOTOR_W"
+	(label "MOTOR_U"
 		(at 224.79 62.23 0)
 		(effects
 			(font
@@ -7905,7 +7905,7 @@
 		)
 		(uuid "6a4575f3-a20f-421a-9bfd-3476d3e2e276")
 	)
-	(label "HALL_U_CONN"
+	(label "HALL_W_CONN"
 		(at 212.09 35.56 180)
 		(effects
 			(font
@@ -8165,7 +8165,7 @@
 		)
 		(uuid "bb5ab670-e440-4aaa-a0a9-1e7cc070160c")
 	)
-	(label "HALL_W_CONN"
+	(label "HALL_U_CONN"
 		(at 212.09 40.64 180)
 		(effects
 			(font
@@ -8305,7 +8305,7 @@
 		)
 		(uuid "dbf0a64a-3f9a-4735-b4a8-63c5ca093378")
 	)
-	(label "MOTOR_U"
+	(label "MOTOR_W"
 		(at 224.79 57.15 0)
 		(effects
 			(font

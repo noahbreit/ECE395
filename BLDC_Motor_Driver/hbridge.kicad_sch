@@ -1365,10 +1365,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "#PWR0802")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "#PWR0502")
 					(unit 1)
@@ -1446,10 +1442,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "R801")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "R501")
 					(unit 1)
@@ -1539,10 +1531,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "Q801")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "Q501")
 					(unit 1)
@@ -1620,10 +1608,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "C801")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "C501")
 					(unit 1)
@@ -1713,10 +1697,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "Q802")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "Q502")
 					(unit 1)
@@ -1790,10 +1770,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "#PWR0801")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "#PWR0501")
 					(unit 1)
@@ -1871,10 +1847,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "C802")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "C502")
 					(unit 1)
@@ -1952,10 +1924,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "C803")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "C503")
 					(unit 1)
@@ -2031,10 +1999,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "#PWR0804")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "#PWR0504")
 					(unit 1)
@@ -2110,10 +2074,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "#PWR0803")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "#PWR0503")
 					(unit 1)
@@ -2189,10 +2149,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "#PWR0805")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "#PWR0505")
 					(unit 1)
@@ -2270,10 +2226,6 @@
 		)
 		(instances
 			(project "BLDC_Motor_Driver"
-				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4805f1a9-48b1-4ad6-b61c-b6588e03a2e8"
-					(reference "C804")
-					(unit 1)
-				)
 				(path "/f8816ca8-d12a-4d6e-83e4-586d8ea9408b/9a7f02cf-afb2-4d66-9ae7-4e30a98b6980/4b4367ba-42d9-462c-bf20-675b6fbf5ab3"
 					(reference "C504")
 					(unit 1)

@@ -701,10 +701,6 @@
     [
       "51dee69d-31d1-4b65-b804-890ce69bca2c",
       "H-Bridge-W"
-    ],
-    [
-      "4805f1a9-48b1-4ad6-b61c-b6588e03a2e8",
-      "H-Bridge-Y"
     ]
   ],
   "text_variables": {}
