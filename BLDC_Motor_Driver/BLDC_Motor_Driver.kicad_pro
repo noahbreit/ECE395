@@ -38,8 +38,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.0,
-          "height": 2.7,
-          "width": 1.15
+          "height": 3.35,
+          "width": 1.4
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -525,6 +525,10 @@
       {
         "netclass": "+36V",
         "pattern": "/MOTOR_*"
+      },
+      {
+        "netclass": "Default",
+        "pattern": "CSN_U"
       }
     ]
   },
