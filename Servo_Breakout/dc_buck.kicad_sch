@@ -1381,6 +1381,16 @@
 	)
 	(wire
 		(pts
+			(xy 180.34 91.44) (xy 180.34 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79df214b-7d4f-4099-b9de-7a64695d053c")
+	)
+	(wire
+		(pts
 			(xy 194.31 107.95) (xy 194.31 111.76)
 		)
 		(stroke
@@ -1541,6 +1551,16 @@
 	)
 	(wire
 		(pts
+			(xy 69.85 90.17) (xy 82.55 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3648f9e-1d46-4af0-9fc0-04539de24580")
+	)
+	(wire
+		(pts
 			(xy 69.85 68.58) (xy 82.55 68.58)
 		)
 		(stroke
@@ -1588,16 +1608,6 @@
 			(type default)
 		)
 		(uuid "c4010968-e670-43ca-bf36-1fe1a4d39508")
-	)
-	(wire
-		(pts
-			(xy 82.55 90.17) (xy 69.85 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c7cb89da-d69e-41ee-b6e5-6de173638824")
 	)
 	(wire
 		(pts
@@ -1709,16 +1719,6 @@
 		)
 		(uuid "fb53a9db-0ac0-44eb-aea0-9f7fd7bc6f0f")
 	)
-	(label "EPAD"
-		(at 180.34 95.25 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "4eb87f71-5395-4a67-b1e3-8041e5d145e0")
-	)
 	(hierarchical_label "GND"
 		(shape bidirectional)
 		(at 93.98 134.62 270)
@@ -1796,6 +1796,17 @@
 		)
 		(uuid "afb336ea-144e-46a3-a79c-f110c6e01611")
 	)
+	(hierarchical_label "GND"
+		(shape bidirectional)
+		(at 180.34 91.44 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f0e08ff7-f9ff-4cb8-86cb-b2be06055c3f")
+	)
 	(symbol
 		(lib_id "Device:R_US")
 		(at 180.34 113.03 0)
@@ -1824,7 +1835,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 181.356 113.284 90)
 			(effects
 				(font
@@ -1894,7 +1905,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 207.9752 107.95 0)
 			(effects
 				(font
@@ -1943,7 +1954,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "39f27f98-f3d3-4726-9640-9b07572eebf0")
 		(property "Reference" "R304"
@@ -1964,7 +1975,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 120.396 75.184 90)
 			(effects
 				(font
@@ -2033,7 +2044,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:CP_Radial_D16.0mm_P7.50mm"
 			(at 70.8152 82.55 0)
 			(effects
 				(font
@@ -2192,7 +2203,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Inductor_Vishay:L_Vishay_IHLP-3232"
 			(at 99.06 68.58 0)
 			(effects
 				(font
@@ -2259,7 +2270,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 119.38 105.7148 0)
 			(effects
 				(font
@@ -2396,7 +2407,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 103.124 115.824 90)
 			(effects
 				(font
@@ -2464,7 +2475,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 161.544 67.564 90)
 			(effects
 				(font
@@ -2533,7 +2544,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 88.646 100.584 90)
 			(effects
 				(font
@@ -2601,7 +2612,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 103.124 105.664 90)
 			(effects
 				(font
@@ -2669,7 +2680,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 151.13 67.6148 0)
 			(effects
 				(font
@@ -2739,7 +2750,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 195.2752 107.95 0)
 			(effects
 				(font
@@ -2807,7 +2818,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 110.744 125.984 90)
 			(effects
 				(font
@@ -2877,7 +2888,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 220.6752 107.95 0)
 			(effects
 				(font
@@ -2926,7 +2937,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "e6b589ec-0c1c-48fc-a8c7-55d70b90a67b")
 		(property "Reference" "C304"
@@ -2947,7 +2958,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 120.3452 88.9 0)
 			(effects
 				(font
@@ -3016,7 +3027,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 83.5152 82.55 0)
 			(effects
 				(font

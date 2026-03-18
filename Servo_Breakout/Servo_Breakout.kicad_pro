@@ -621,6 +621,10 @@
     [
       "491641e7-7230-4c29-9234-fdc15d52c844",
       "PowerSwitch"
+    ],
+    [
+      "5cbea618-1380-4055-9014-c8a72e95c185",
+      "Power"
     ]
   ],
   "text_variables": {}
