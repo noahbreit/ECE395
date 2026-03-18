@@ -1,0 +1,428 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "d50da23a-d62e-4014-ae89-4f18c8c8c668")
+	(paper "A4")
+	(lib_symbols)
+	(wire
+		(pts
+			(xy 53.34 39.37) (xy 55.88 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "555f34f9-80cc-456a-94da-640855c3bebb")
+	)
+	(wire
+		(pts
+			(xy 53.34 130.81) (xy 55.88 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a84baf6f-2947-4fe2-9cc2-42b5d1befd18")
+	)
+	(label "SW_EN"
+		(at 53.34 39.37 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "94404118-118a-4682-b34f-4fa7742af376")
+	)
+	(label "SW_EN"
+		(at 53.34 130.81 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d67ec0a5-6337-43fc-9423-4fa13ea588b3")
+	)
+	(sheet
+		(at 55.88 36.83)
+		(size 27.305 13.97)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "491641e7-7230-4c29-9234-fdc15d52c844")
+		(property "Sheetname" "PowerSwitch"
+			(at 55.88 36.1184 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "dc_buck.kicad_sch"
+			(at 55.88 51.3846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "EN" input
+			(at 55.88 39.37 180)
+			(uuid "3c14b735-25ba-4f5c-bba0-3fd8f0b8a667")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "GND" bidirectional
+			(at 55.88 45.72 180)
+			(uuid "50414c0c-49b8-4375-9a8a-5a56d3e87805")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VIN" input
+			(at 55.88 43.18 180)
+			(uuid "c91d0016-a557-4737-bd73-606572f6756d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VOUT" output
+			(at 83.185 39.37 0)
+			(uuid "8c4b15b0-e813-4cb1-b464-8e2c56677ed0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "Servo_Breakout"
+				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 55.88 94.615)
+		(size 58.42 41.91)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "c5c89831-20f3-4f5a-8437-e261bd07b7d7")
+		(property "Sheetname" "Microcontroller"
+			(at 55.88 93.9034 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "microcontroller.kicad_sch"
+			(at 55.88 137.1096 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "BOOT0" input
+			(at 55.88 106.68 180)
+			(uuid "e8448c07-10d1-449c-a1a3-89837352a1c4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C1_SCL" output
+			(at 114.3 97.79 0)
+			(uuid "7fb015df-c728-436f-a357-784d5fafd91a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C1_SDA" bidirectional
+			(at 114.3 100.33 0)
+			(uuid "678c36e0-2fc3-43e0-9ae7-6ead56ae8d6a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C2_SCL" output
+			(at 114.3 104.14 0)
+			(uuid "0107ffb2-ee0c-4c67-8503-535129c336ee")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C2_SDA" bidirectional
+			(at 114.3 106.68 0)
+			(uuid "5d134d80-759b-42dd-8c0a-3bba480f093f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LED_BLUE" output
+			(at 55.88 119.38 180)
+			(uuid "8fdcf0d8-e437-43a1-ad85-2318a82d7918")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED_GREEN" output
+			(at 55.88 121.92 180)
+			(uuid "4028806e-329d-477b-b14c-ff763405870f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED_ORANGE" output
+			(at 55.88 124.46 180)
+			(uuid "b264e984-7fe7-4211-85f1-6d45cc69de89")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED_RED" output
+			(at 55.88 127 180)
+			(uuid "fcec4243-9503-4090-a282-231b1c587f36")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRST" input
+			(at 55.88 109.22 180)
+			(uuid "174856ef-cf58-48ff-aad0-cde27db99f9e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI2_MISO" input
+			(at 114.3 110.49 0)
+			(uuid "1b5234dd-02be-42cb-b9a3-fbd45b4aa653")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SPI2_MOSI" output
+			(at 114.3 113.03 0)
+			(uuid "a4312463-0271-42f0-8867-549a9614151c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SPI2_SCK" bidirectional
+			(at 114.3 115.57 0)
+			(uuid "dde1224a-e432-41d4-aeb1-0ac37bbf833e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SWCLK" bidirectional
+			(at 55.88 101.6 180)
+			(uuid "bdf9a3a3-20cc-460f-a962-1b35d1f70c67")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SWDIO" bidirectional
+			(at 55.88 104.14 180)
+			(uuid "95b96528-dd95-4893-8dfa-c4b10d46925f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "USART1_RX" input
+			(at 114.3 119.38 0)
+			(uuid "d882cba3-c0fb-494f-9ec2-54d51f5f1fee")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USART1_TX" output
+			(at 114.3 121.92 0)
+			(uuid "5c5855c8-1ed2-420c-8d87-a9d3fe1cdaf8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "USB_D+" bidirectional
+			(at 55.88 113.03 180)
+			(uuid "26c52f13-b671-42ee-adfd-6ad72720f1f6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "USB_D-" bidirectional
+			(at 55.88 115.57 180)
+			(uuid "f8282620-62c4-4a43-a710-5e1beed96db2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "3V3_REG" input
+			(at 55.88 97.79 180)
+			(uuid "cd0e62ed-babd-46d8-a948-c6a6a4d48a6b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "PWM_TIM2_CH1" output
+			(at 114.3 125.73 0)
+			(uuid "832f7ab8-3a22-4c08-ab2d-a1410cf872e2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PWM_TIM2_CH2" output
+			(at 114.3 128.27 0)
+			(uuid "a4e19f95-8880-45f7-96dd-bb4883821c0e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PWM_TIM15_CH1" output
+			(at 114.3 130.81 0)
+			(uuid "81a95d6f-2ae9-40e4-ac29-19d21c2613ad")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "PWM_TIM15_CH2" output
+			(at 114.3 133.35 0)
+			(uuid "850132fa-e5da-4bf2-a092-29e725c435f3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SW_EN" output
+			(at 55.88 130.81 180)
+			(uuid "43c8a2a8-8472-435b-8e10-0b23e9802e61")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "Servo_Breakout"
+				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
