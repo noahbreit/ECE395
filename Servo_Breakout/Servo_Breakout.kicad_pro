@@ -48,10 +48,16 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.0
         }
       },
-      "diff_pair_dimensions": [],
+      "diff_pair_dimensions": [
+        {
+          "gap": 0.0,
+          "via_gap": 0.0,
+          "width": 0.0
+        }
+      ],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -180,7 +186,9 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [],
+      "track_widths": [
+        0.0
+      ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
           "corner_radius_percentage": 80,
@@ -207,7 +215,12 @@
           "spacing": 0.6
         }
       },
-      "via_dimensions": [],
+      "via_dimensions": [
+        {
+          "diameter": 0.0,
+          "drill": 0.0
+        }
+      ],
       "zones_allow_external_fillets": false
     },
     "ipc2581": {
@@ -615,16 +628,16 @@
       "Root"
     ],
     [
-      "c5c89831-20f3-4f5a-8437-e261bd07b7d7",
-      "Microcontroller"
-    ],
-    [
       "491641e7-7230-4c29-9234-fdc15d52c844",
       "PowerSwitch"
     ],
     [
-      "5cbea618-1380-4055-9014-c8a72e95c185",
-      "Power"
+      "de7a4b00-096f-4422-b46a-78bd243039a7",
+      "LevelShifter"
+    ],
+    [
+      "2219184e-5581-4c98-b001-4a10c6bde3ba",
+      "Timer"
     ]
   ],
   "text_variables": {}

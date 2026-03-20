@@ -1,4 +1,8 @@
 (sym_lib_table
   (version 7)
-  (lib (name "BD9G500EFJ")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/2026-03-18_05-08-26.kicad_sym")(options "")(descr ""))
+  (lib (name "BD9G500EFJ")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/symbols/BD9G500EFJ.kicad_sym")(options "")(descr ""))
+  (lib (name "Buffer_Texas")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/symbols/Buffer_Texas.kicad_sym")(options "")(descr ""))
+  (lib (name "Driver_Motor_Analog")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/symbols/Driver_Motor_Analog.kicad_sym")(options "")(descr ""))
+  (lib (name "Regulator_Texas")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/symbols/Regulator_Texas.kicad_sym")(options "")(descr ""))
+  (lib (name "STPS15H100CBY-TR")(type "KiCad")(uri "${KIPRJMOD}/libs/symbols/symbols/STPS15H100CBY-TR.kicad_sym")(options "")(descr ""))
 )
