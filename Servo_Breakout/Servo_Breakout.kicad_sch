@@ -2415,16 +2415,8 @@
 		(uuid "f3b17502-de51-4455-95df-f5d2083bd89f")
 	)
 	(no_connect
-		(at 101.6 119.38)
-		(uuid "50a8300c-45e7-4672-b1e4-fc1a0702528f")
-	)
-	(no_connect
 		(at 81.28 119.38)
 		(uuid "ad259d76-93b6-4f7f-96f4-1b9393a4ef44")
-	)
-	(no_connect
-		(at 91.44 119.38)
-		(uuid "ca35776e-6c4f-4138-becb-7e996498af4c")
 	)
 	(no_connect
 		(at 71.12 119.38)
@@ -3159,72 +3151,6 @@
 			(justify right bottom)
 		)
 		(uuid "f73b0d1f-4467-4465-8264-a765666fc75c")
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 91.44 116.84 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "0404e495-6fd7-42aa-8f70-4f43e1baddfe")
-		(property "Reference" "H103"
-			(at 93.98 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "M3"
-			(at 93.98 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-			(at 91.44 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 91.44 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 91.44 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "2ac36e8d-dac4-4be2-acea-9852f2c55c8e")
-		)
-		(instances
-			(project "Servo_Breakout"
-				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668"
-					(reference "H103")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -4469,72 +4395,6 @@
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668"
 					(reference "H102")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Mechanical:MountingHole_Pad")
-		(at 101.6 116.84 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "d8607408-d974-4956-b0d9-e7cf909f289a")
-		(property "Reference" "H104"
-			(at 104.14 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "M3"
-			(at 104.14 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-			(at 101.6 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 101.6 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 101.6 116.84 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "98637999-0bce-48de-b599-6a731a26a521")
-		)
-		(instances
-			(project "Servo_Breakout"
-				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668"
-					(reference "H104")
 					(unit 1)
 				)
 			)
