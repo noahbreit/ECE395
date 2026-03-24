@@ -979,17 +979,17 @@
 		)
 		(uuid "903e3526-a63f-4cf7-93c6-69d52bb5d2e2")
 	)
-	(text "VOUT = (R305+R303+R302)/(R302)"
+	(text "VOUT = (R301 + R304) / (R303)"
 		(exclude_from_sim no)
-		(at 66.04 64.77 0)
+		(at 65.278 63.754 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 		)
-		(uuid "a15b1929-4bc4-4a99-866d-2e469cbae024")
+		(uuid "a4e4b542-536b-4b55-bc26-808d6f5722c8")
 	)
-	(text "Consider R303 = 5k for +6V Output\n(servo rated for 6.8V)"
+	(text "Consider R304 = 5k for +6V Output\n(servo rated for 6.8V)"
 		(exclude_from_sim no)
 		(at 118.11 134.62 0)
 		(effects
@@ -1009,7 +1009,7 @@
 		)
 		(uuid "da63b51d-79ce-4288-bd9e-8e0aac4145b1")
 	)
-	(text "VOUT = (R305+R303+R302)/(R302)"
+	(text "VOUT = (R301 + R304) / (R303)"
 		(exclude_from_sim no)
 		(at 117.602 131.064 0)
 		(effects
