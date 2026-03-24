@@ -989,7 +989,7 @@
 		)
 		(uuid "a4e4b542-536b-4b55-bc26-808d6f5722c8")
 	)
-	(text "Consider R304 = 5k for +6V Output\n(servo rated for 6.8V)"
+	(text "Consider R204 = 5k for +6V Output\n(servo rated for 6.8V)"
 		(exclude_from_sim no)
 		(at 118.11 134.62 0)
 		(effects
@@ -998,6 +998,16 @@
 			)
 		)
 		(uuid "b495c099-07eb-4369-b695-2afdc8250dd2")
+	)
+	(text "R205 in place of C1 in example application, leave open or short"
+		(exclude_from_sim no)
+		(at 116.84 143.51 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c1eccea3-517a-460d-ba0a-aaf216aaea7d")
 	)
 	(text "VBUCK disabled when EN input is floating"
 		(exclude_from_sim no)
@@ -1009,7 +1019,7 @@
 		)
 		(uuid "da63b51d-79ce-4288-bd9e-8e0aac4145b1")
 	)
-	(text "VOUT = (R301 + R304) / (R303)"
+	(text "VOUT = (R201 + R204 + R203) / (R203)"
 		(exclude_from_sim no)
 		(at 117.602 131.064 0)
 		(effects
@@ -1036,6 +1046,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "129572d1-d205-4d4e-969f-e50f56e2a092")
+	)
+	(junction
+		(at 119.38 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4193db66-340e-407a-b648-c8bae49fa488")
 	)
 	(junction
 		(at 82.55 90.17)
@@ -1066,12 +1082,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8c8ddc27-b4c7-45e9-b2d1-f24b88c240c7")
-	)
-	(junction
-		(at 119.38 100.33)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "8cfeaa42-de21-4a4c-a96f-e8c67013bdea")
 	)
 	(junction
 		(at 219.71 111.76)
@@ -1141,6 +1151,16 @@
 	)
 	(wire
 		(pts
+			(xy 93.98 100.33) (xy 107.95 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "032360a5-a34f-418e-921f-2936ac7bfbde")
+	)
+	(wire
+		(pts
 			(xy 134.62 68.58) (xy 134.62 95.25)
 		)
 		(stroke
@@ -1178,6 +1198,16 @@
 			(type default)
 		)
 		(uuid "0c53cfab-c8ae-4ea9-b1d7-0c4de385f219")
+	)
+	(wire
+		(pts
+			(xy 115.57 100.33) (xy 119.38 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f1cc979-c45c-4c41-834f-4ea4ac2c1010")
 	)
 	(wire
 		(pts
@@ -1268,16 +1298,6 @@
 			(type default)
 		)
 		(uuid "3101e579-aacf-4317-acbb-b913219a6879")
-	)
-	(wire
-		(pts
-			(xy 93.98 100.33) (xy 119.38 100.33)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "365d50c7-7421-4688-9c56-992fe672a022")
 	)
 	(wire
 		(pts
@@ -1988,7 +2008,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1df099a8-5a91-4129-9a2d-0feb910cece6")
-		(property "Reference" "R307"
+		(property "Reference" "R208"
 			(at 182.88 111.7599 0)
 			(effects
 				(font
@@ -2042,7 +2062,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R307")
+					(reference "R208")
 					(unit 1)
 				)
 			)
@@ -2058,7 +2078,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2246636d-4467-4101-b00f-7b039eb53e14")
-		(property "Reference" "C307"
+		(property "Reference" "C207"
 			(at 210.82 102.8699 0)
 			(effects
 				(font
@@ -2112,7 +2132,74 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C307")
+					(reference "C207")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_US")
+		(at 111.76 100.33 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp yes)
+		(uuid "2b564b65-65c4-4405-925e-f6baea85509a")
+		(property "Reference" "R205"
+			(at 111.76 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0"
+			(at 111.76 97.79 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
+			(at 112.014 99.314 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 111.76 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor, US symbol"
+			(at 111.76 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c7e4e00b-8a4a-4ee0-ac71-b9c087de6603")
+		)
+		(pin "1"
+			(uuid "f978c4e2-a34f-45ee-9ffb-c5fb3d85ac73")
+		)
+		(instances
+			(project "Servo_Breakout"
+				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
+					(reference "R205")
 					(unit 1)
 				)
 			)
@@ -2128,7 +2215,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2d0ad82b-c0ce-4ece-93b6-4f99016d63da")
-		(property "Reference" "R308"
+		(property "Reference" "R209"
 			(at 212.09 63.4999 0)
 			(effects
 				(font
@@ -2182,7 +2269,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R308")
+					(reference "R209")
 					(unit 1)
 				)
 			)
@@ -2198,7 +2285,7 @@
 		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "39f27f98-f3d3-4726-9640-9b07572eebf0")
-		(property "Reference" "R305"
+		(property "Reference" "R206"
 			(at 121.92 73.6599 0)
 			(effects
 				(font
@@ -2252,7 +2339,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R305")
+					(reference "R206")
 					(unit 1)
 				)
 			)
@@ -2267,7 +2354,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "402f4ada-fa7f-4f0b-8cc7-c269b5f8f9ec")
-		(property "Reference" "C301"
+		(property "Reference" "C201"
 			(at 61.468 76.962 0)
 			(effects
 				(font
@@ -2321,7 +2408,7 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C301")
+					(reference "C201")
 					(unit 1)
 				)
 			)
@@ -2337,7 +2424,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "433b5079-00b2-44ac-89cf-184ab3f9e0f6")
-		(property "Reference" "U302"
+		(property "Reference" "U202"
 			(at 157.48 85.09 0)
 			(effects
 				(font
@@ -2412,7 +2499,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "U302")
+					(reference "U202")
 					(unit 1)
 				)
 			)
@@ -2428,7 +2515,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "450852fc-009c-4fc1-a02d-512899aff233")
-		(property "Reference" "L301"
+		(property "Reference" "L201"
 			(at 99.06 63.5 90)
 			(effects
 				(font
@@ -2480,7 +2567,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "L301")
+					(reference "L201")
 					(unit 1)
 				)
 			)
@@ -2495,7 +2582,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "4a087a2b-9ceb-4a76-a1f9-f1b981b54b8d")
-		(property "Reference" "C303"
+		(property "Reference" "C203"
 			(at 115.57 110.998 90)
 			(effects
 				(font
@@ -2503,7 +2590,7 @@
 				)
 			)
 		)
-		(property "Value" "15uF/100V"
+		(property "Value" "6800pF/50V"
 			(at 115.57 113.792 90)
 			(effects
 				(font
@@ -2511,7 +2598,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_2220_5750Metric_Pad1.97x5.40mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder"
 			(at 119.38 105.7148 0)
 			(effects
 				(font
@@ -2547,7 +2634,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C303")
+					(reference "C203")
 					(unit 1)
 				)
 			)
@@ -2563,7 +2650,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6117eb25-44f7-480b-9f67-f0fc67e9200e")
-		(property "Reference" "R303"
+		(property "Reference" "R203"
 			(at 102.87 110.49 90)
 			(effects
 				(font
@@ -2615,7 +2702,7 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R303")
+					(reference "R203")
 					(unit 1)
 				)
 			)
@@ -2631,7 +2718,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "79b9c69a-d1e8-40bb-9bf9-3c43a99a54c4")
-		(property "Reference" "R306"
+		(property "Reference" "R207"
 			(at 161.29 62.23 90)
 			(effects
 				(font
@@ -2683,7 +2770,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R306")
+					(reference "R207")
 					(unit 1)
 				)
 			)
@@ -2698,7 +2785,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "8933eb6e-7d07-4ab4-ba39-9eff95bb7e18")
-		(property "Reference" "R301"
+		(property "Reference" "R201"
 			(at 79.756 99.06 0)
 			(effects
 				(font
@@ -2752,7 +2839,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R301")
+					(reference "R201")
 					(unit 1)
 				)
 			)
@@ -2768,7 +2855,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a2a3aeb2-b82c-4591-80f1-e4293bccb0e0")
-		(property "Reference" "R302"
+		(property "Reference" "R202"
 			(at 102.87 100.33 90)
 			(effects
 				(font
@@ -2820,7 +2907,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R302")
+					(reference "R202")
 					(unit 1)
 				)
 			)
@@ -2836,7 +2923,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "adcc5496-75b1-4b7c-bcfa-8d5970f24937")
-		(property "Reference" "C305"
+		(property "Reference" "C205"
 			(at 147.32 60.96 90)
 			(effects
 				(font
@@ -2888,7 +2975,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C305")
+					(reference "C205")
 					(unit 1)
 				)
 			)
@@ -2904,7 +2991,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b8473db2-a474-4df9-8d56-c5034844cda5")
-		(property "Reference" "U301"
+		(property "Reference" "U201"
 			(at 101.6 33.02 0)
 			(effects
 				(font
@@ -2961,7 +3048,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "U301")
+					(reference "U201")
 					(unit 1)
 				)
 			)
@@ -2977,7 +3064,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c7d43bce-082e-4a54-ba7c-ef4a105bcd77")
-		(property "Reference" "C306"
+		(property "Reference" "C206"
 			(at 198.12 102.8699 0)
 			(effects
 				(font
@@ -3031,7 +3118,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C306")
+					(reference "C206")
 					(unit 1)
 				)
 			)
@@ -3047,7 +3134,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cc4d2b27-5bba-45e7-a8d4-a2b87eaa7b8c")
-		(property "Reference" "R304"
+		(property "Reference" "R204"
 			(at 110.49 120.65 90)
 			(effects
 				(font
@@ -3099,7 +3186,7 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "R304")
+					(reference "R204")
 					(unit 1)
 				)
 			)
@@ -3115,7 +3202,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e6096814-64f5-4b40-b7ed-4e029e43f1f4")
-		(property "Reference" "C308"
+		(property "Reference" "C208"
 			(at 223.52 102.8699 0)
 			(effects
 				(font
@@ -3169,7 +3256,7 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C308")
+					(reference "C208")
 					(unit 1)
 				)
 			)
@@ -3185,7 +3272,7 @@
 		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "e6b589ec-0c1c-48fc-a8c7-55d70b90a67b")
-		(property "Reference" "C304"
+		(property "Reference" "C204"
 			(at 123.19 83.8199 0)
 			(effects
 				(font
@@ -3239,7 +3326,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C304")
+					(reference "C204")
 					(unit 1)
 				)
 			)
@@ -3254,7 +3341,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "fc12f1c0-5b6c-4abc-8e61-e3d9601b7e87")
-		(property "Reference" "C302"
+		(property "Reference" "C202"
 			(at 75.438 76.708 0)
 			(effects
 				(font
@@ -3308,7 +3395,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/491641e7-7230-4c29-9234-fdc15d52c844"
-					(reference "C302")
+					(reference "C202")
 					(unit 1)
 				)
 			)

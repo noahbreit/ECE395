@@ -813,7 +813,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "28a68850-b007-46c5-8401-419cdec5d147")
-		(property "Reference" "C402"
+		(property "Reference" "C302"
 			(at 111.76 72.39 90)
 			(effects
 				(font
@@ -865,7 +865,7 @@
 		(instances
 			(project "Servo_Breakout"
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/de7a4b00-096f-4422-b46a-78bd243039a7"
-					(reference "C402")
+					(reference "C302")
 					(unit 1)
 				)
 			)
@@ -881,7 +881,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c2d88f0c-53af-44ad-8c4e-895ec1b5b8c6")
-		(property "Reference" "C401"
+		(property "Reference" "C301"
 			(at 96.52 72.39 90)
 			(effects
 				(font
@@ -933,7 +933,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/de7a4b00-096f-4422-b46a-78bd243039a7"
-					(reference "C401")
+					(reference "C301")
 					(unit 1)
 				)
 			)
@@ -949,7 +949,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ecc71377-3fbc-469c-9b5c-44feb2b0c565")
-		(property "Reference" "U401"
+		(property "Reference" "U301"
 			(at 106.2833 113.03 0)
 			(effects
 				(font
@@ -1021,7 +1021,7 @@
 		(instances
 			(project ""
 				(path "/d50da23a-d62e-4014-ae89-4f18c8c8c668/de7a4b00-096f-4422-b46a-78bd243039a7"
-					(reference "U401")
+					(reference "U301")
 					(unit 1)
 				)
 			)
