@@ -4,6 +4,13 @@
 	(generator_version "9.0")
 	(uuid "269a1e43-66c2-427c-9f51-43187b5edc30")
 	(paper "A4")
+	(title_block
+		(title "Servo Breakout")
+		(date "2026-03-24")
+		(rev "A")
+		(company "University of Illinois Urbana-Champaign")
+		(comment 4 "Contributors: Noah Breit, Thomas McManamen")
+	)
 	(lib_symbols
 		(symbol "Device:C"
 			(pin_numbers
