@@ -922,6 +922,16 @@
 		)
 		(uuid "3de79143-da08-4513-a524-ffe840ca4966")
 	)
+	(text "POT is 50k with 128 steps"
+		(exclude_from_sim no)
+		(at 130.81 62.23 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "54a8ad5f-1fdf-4c4a-8ace-5e02421fc33c")
+	)
 	(text "T_HIGH = 1.1 * (R502 + POT) * C502 = 0.5ms -> 2.5(+)ms"
 		(exclude_from_sim no)
 		(at 229.87 88.138 0)
@@ -931,6 +941,16 @@
 			)
 		)
 		(uuid "6ae9a129-a115-45ff-8238-0425b683397c")
+	)
+	(text "0 Steps: R = 4.7k + 0 = 4.7k -> 0.5ms HIGH time\n48(+-1) Steps: R = 4.7k + 18k = 22.7k -> 2.5ms HIGH time"
+		(exclude_from_sim no)
+		(at 130.81 66.294 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f8dbaeec-956c-4440-8180-c145930a4a64")
 	)
 	(text "MONO HIGH TIME GENERATOR"
 		(exclude_from_sim no)
