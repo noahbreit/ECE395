@@ -1,0 +1,6 @@
+../Drivers/tmc/helpers/CRC.c:88:9:tmc_fillCRC8Table	40	static
+../Drivers/tmc/helpers/CRC.c:150:9:tmc_CRC8	32	static
+../Drivers/tmc/helpers/CRC.c:166:9:tmc_tableGetPolynomial	16	static
+../Drivers/tmc/helpers/CRC.c:174:6:tmc_tableIsReflected	16	static
+../Drivers/tmc/helpers/CRC.c:183:16:flipByte	16	static
+../Drivers/tmc/helpers/CRC.c:203:17:flipBitsInBytes	16	static

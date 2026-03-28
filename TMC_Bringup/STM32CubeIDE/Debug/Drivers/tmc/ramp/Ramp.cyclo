@@ -1,0 +1,7 @@
+../Drivers/tmc/ramp/Ramp.c:11:6:tmc_ramp_init	1
+../Drivers/tmc/ramp/Ramp.c:21:9:tmc_ramp_compute	2
+../Drivers/tmc/ramp/Ramp.c:39:9:tmc_ramp_get_rampVelocity	2
+../Drivers/tmc/ramp/Ramp.c:50:9:tmc_ramp_get_rampPosition	2
+../Drivers/tmc/ramp/Ramp.c:61:6:tmc_ramp_get_enabled	2
+../Drivers/tmc/ramp/Ramp.c:72:6:tmc_ramp_set_enabled	1
+../Drivers/tmc/ramp/Ramp.c:82:6:tmc_ramp_toggle_enabled	1
