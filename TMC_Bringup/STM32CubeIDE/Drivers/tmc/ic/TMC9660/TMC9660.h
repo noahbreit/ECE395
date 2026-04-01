@@ -35,6 +35,25 @@ typedef struct TMC9660BusAddresses_ {
     uint8_t host;
 } TMC9660BusAddresses;
 
+// Noah Update
+typedef enum TMC9660BlStatus_ {
+    TMC9660_BLSTATUS_OK             	= 0,  // Command executed successfully
+    TMC9660_BLSTATUS_CMD_NOT_FOUND     	= 1,  // The request has an invalid command number.
+    TMC9660_BLSTATUS_INVALID_ADDR       = 3,  // The memory address is not valid for the requested command.
+    TMC9660_BLSTATUS_INVALID_VALUE      = 4,  // The request has an invalid value.
+    TMC9660_BLSTATUS_INVALID_BANK    	= 14, // The memory bank is not valid for the requested command.
+    TMC9660_BLSTATUS_BUSY    			= 15, // This status code is only for the SPI communication.
+											  // Indicates that the bootloader has not yet finished processing the last
+											  // command.
+    TMC9660_BLSTATUS_MEM_UNCONFIGURED   = 17, // The external memory is not configured.
+    TMC9660_BLSTATUS_OTP_ERROR      	= 18, // The OTP command has failed. Refer to the OTP command for more details.
+	TMC9660_BLSTATUS_SESSION_START 		= 19, // This status code is only for the SPI communication.
+										 	  // This status code is sent during the first SPI datagram after power-on, when
+											  // no prior command has yet been processed and therefore no prior status
+											  // exists.
+	TMC9660_BLSTATUS_CMD_NOT_AVAILABLE 	= 20  // The command is currently not available.
+} TMC9660BlStatus;
+
 typedef enum TMC9660BlCommand_ {
     TMC9660_BLCMD_GET_INFO           = 0,
     TMC9660_BLCMD_GET_BANK           = 8,

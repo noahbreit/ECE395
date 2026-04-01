@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "tmc/ic/TMC9660/TMC9660.h"
+#include "tmc/ic/TMC9660/TMC9660_BL_HW_Abstraction.h"
+#include "tmc/ic/TMC9660/TMC9660_PARAM_HW_Abstraction.h"
 #include <stdio.h>
 #include <stdarg.h>
 /* USER CODE END Includes */
@@ -89,24 +91,44 @@ TMC9660BusAddresses tmc9660_getBusAddresses(uint16_t icID)
 /* Mandatory physical UART transport callback */
 bool tmc9660_readWriteUART(uint16_t icID, uint8_t *data, size_t writeLength, size_t readLength)
 {
-	HAL_StatusTypeDef status = HAL_UART_Transmit(&huart3, data, (uint16_t)writeLength, 100);
-    if (status != HAL_OK)
-    {
-    	UART_Printf("UART TX Error: %d\r\n", status);
-    	return false;
-    }
+	/*
+	 * typedef enum
+		{
+		  HAL_OK       = 0x00,
+		  HAL_ERROR    = 0x01,
+		  HAL_BUSY     = 0x02,
+		  HAL_TIMEOUT  = 0x03
+		} HAL_StatusTypeDef;
+	 */
+	// 1. Transmit the command
+	if (HAL_UART_Transmit(&huart3, data, (uint16_t)writeLength, 100) != HAL_OK) return false;
 
+	// 2. Receive the reply
+	if (readLength > 0)
+	{
+		uint8_t byteIn = 0;
 
-    if (readLength > 0)
-    {
-        status = HAL_UART_Receive(&huart3, data, (uint16_t)readLength, 100);
-        if (status != HAL_OK)
-        {
-        	UART_Printf("UART RX Error: %d (Timeout typically = 3)\r\n", status);
-            return false;
-        }
-    }
-    return true;
+		// --- THE FIX: Line-Turnaround Glitch Filter ---
+		// Read bytes one by one until we get a non-zero byte.
+		// This silently discards the 0x00 glitch and captures the true start byte (e.g., 255).
+		do {
+			if (HAL_UART_Receive(&huart3, &byteIn, 1, 50) != HAL_OK) {
+				return false; // Timeout
+			}
+		} while (byteIn == 0x00);
+
+		// Store the first valid byte (255) at the correct index (0)
+		data[0] = byteIn;
+
+		// Read the remaining bytes of the datagram (which will now include the CRC!)
+		if (readLength > 1) {
+			if (HAL_UART_Receive(&huart3, &data[1], (uint16_t)(readLength - 1), 100) != HAL_OK) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 /* Debug Helper: Print formatted strings to USART2 (PC Terminal) */
 void UART_Printf(const char* fmt, ...) {
@@ -116,6 +138,51 @@ void UART_Printf(const char* fmt, ...) {
     int len = vsnprintf(buf, sizeof(buf), fmt, args);
     va_end(args);
     if (len > 0) HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 100);
+}
+
+void Test_TMC9660_Status(int32_t status) {
+    TMC9660ParamStatus test = (TMC9660ParamStatus)status;
+
+    switch (test) {
+        case TMC9660_PARAMSTATUS_CHKERROR:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_CHKERROR (Checksum error during communication)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_INVALID_CMD:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_INVALID_CMD (Invalid command number)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_WRONG_TYPE:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_WRONG_TYPE (Invalid type number)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_INVALID_VALUE:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_INVALID_VALUE (Invalid value)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_CMD_NOT_AVAILABLE:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_CMD_NOT_AVAILABLE (Command currently not available)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_CMD_LOAD_ERROR:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_CMD_LOAD_ERROR (Failed to load command into script memory)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_MAX_EXCEEDED:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_MAX_EXCEEDED (Maximum exceeded)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_CMD_DOWNLOAD_NOT_POSSIBLE:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_CMD_DOWNLOAD_NOT_POSSIBLE (Script memory loading not available)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_OK:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_OK (Success)\r\n");
+            break;
+        case TMC9660_PARAMSTATUS_CMD_LOADED:
+            UART_Printf("STATUS: TMC9660_PARAMSTATUS_CMD_LOADED (Command successfully loaded into script memory)\r\n");
+            break;
+        default:
+            UART_Printf("STATUS: UNKNOWN (Code: %ld)\r\n", status);
+            break;
+    }
+}
+
+void ERR_Handler(int line) {
+	UART_Printf("\nFailure @ line: %d\n", line);
+	while(1) {};
 }
 /* USER CODE END 0 */
 
@@ -151,28 +218,339 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint16_t tmc_id = 0;
-  uint32_t reg_val = 0;
-  uint8_t  tmc_detected = false;
 
-  UART_Printf("\r\n--- TMC9660 Bring-up (USART3) ---\r\n");
+  /* USER CODE BEGIN 2 */
+  uint32_t rVal = 0;
+  TMC9660BlStatus blStatus;
+  uint32_t reg = 0;
 
-  /* Proof of life: Read IOIN (Reg 0x06) via Register Mode */
-  /* Arguments: icID, command, offset, block, writeValue, readValue */
-  int32_t status = tmc9660_reg_sendCommand(tmc_id, TMC9660_CMD_GAP, 0x06, 0, 0, &reg_val);
+  UART_Printf("\r\n--- TMC9660 Boot Configuration ---\r\n");
+  // Can burn these to One-Time-Programming Memory, but not necessary
+  // Instead, just run following code block on boot
+  // Note: TMC9660's LDOs will lag according to SS_VEXTx_FIELD
+  // Note: Fields in Steps #1-#5 are from TMC9660 Datasheet
+  // Note: Fields in Steps #6 are from TMC9660 Parameter Mode Guide
 
-  if (status == TMC9660_PARAMSTATUS_OK)
-  {
-    tmc_detected = true;
-	UART_Printf("STATUS: OK (Code %ld)\r\n", status);
-	UART_Printf("IOIN Value: 0x%08lX\r\n", reg_val);
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_GET_INFO, 0, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
   }
-  else
-  {
-	UART_Printf("STATUS: FAIL (Code %ld)\r\n", status);
-	UART_Printf("Check wiring on CN10 (PC10/PC11)\r\n");
+
+  // Select CONFIG Bank 5
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_BANK, 5, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+  	  ERR_Handler(__LINE__);
   }
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_SET); // Green LED On
+
+  // 1. LDO & POWER
+  // VEXT1=5.0V(3), Slope=3ms(0), VEXT2=3.3V(2), Slope=3ms(0), ShortFault=false(0)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_00_POWER, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT1_FIELD, 3); 				/* 0: LDO disabled
+																				 * 1: 2.5V
+																				 * 2: 3.3V
+																				 * 3: 5.0V <--
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_00_POWER_SS_VEXT1_FIELD, 0);			/* 0: 3ms <--
+																				 * 1: 1.5ms
+																				 * 2: 0.75ms
+																				 * 3: 0.37ms
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT2_FIELD, 2);				/* 0: LDO disabled
+																				 * 1: 2.5V
+																				 * 2: 3.3V <--
+																				 * 3: 5.0V
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_00_POWER_SS_VEXT2_FIELD, 0);			/* 0: 3ms	<--
+																				 * 1: 1.5ms
+																				 * 2: 0.75ms
+																				 * 3: 0.37ms
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_00_POWER_LDO_SHORT_FAULT_FIELD, 0);		// Default: 0
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_00_POWER, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+  	  ERR_Handler(__LINE__);
+  }
+  // 2. UART & ADDRESSES
+  // ChipAddr=1, HostAddr=255
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_01_ADDRESS, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+  	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_01_DEVICE_ADDRESS_FIELD, 1);			// Default: 1
+  reg = field_update16(reg, CONFIG_BOOT_01_MASTER_ADDRESS_FIELD, 255);			// Default: 255
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_01_ADDRESS, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 3. INTERFACE CONFIG
+  // UART Enable (Disable=0), SPI Slave Disable(1), TX=GPIO6(0), RX=GPIO7(0), Baud=auto16(7), SCK=GPIO11(1)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_03_BOOT_INTERFACE, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_DISABLE_UART_FIELD, 0); // Default: 0
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_DISABLE_SPI_FIELD, 1);	// Default: 0
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_UART_TX_FIELD, 0);		/* 0: GPIO6 <--
+																				 * 1: GPIO0
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_UART_RX_FIELD, 0);		/* 0: GPIO7	<--
+																				 * 1: GPIO0
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_UART_BAUDRATE_FIELD, 7);/* 0: 9600
+																				 * 1: 19200
+																				 * 2: 38400
+																				 * 3: 57600
+																				 * 4: 115200
+																				 * 5: 1000000
+																				 * 6: auto8
+																				 * 7: auto16 <--
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_03_INTERFACE_BL_SPI0_SCK_FIELD, 1);		/* 0: GPIO6
+																				 * 1: GPIO11 <--
+																				 * Note: This is bit is only required for
+																				 * the SPI bootloader communication if it
+																				 * uses SPI0 (BL_SPI_SELECT=0)
+																				 */
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_03_BOOT_INTERFACE, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 4. SPI FLASH
+  // Enable=true, CS=GPIO12, Freq=10MHz(3 @ 40MHz Sys)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_05_FLASH, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_05_SPI_FLASH_EN_FIELD, 1);				// Default: 0
+  reg = field_update16(reg, CONFIG_BOOT_05_FLASH_SPI_CS_SW_FIELD, 12);			/* assuming this field is SPI_FLASH_CS from datasheet
+																				 * assign GPIO pin to SPI_FLASH chip select
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_05_FLASH_SPI_DIV_FIELD, 3);				/* assuming this field is SPI_FLASH_FREQ from datasheet
+																				 * default .toml file sets SPI_FLASH_FREQ to 10MHz
+																				 * and datasheet shows: SPI_FLASH_FREQ=3 -> 10MHz
+																				 */
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_05_FLASH, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 5. CLOCK & PLL
+  // ExtOsc(1), 16MHz(3), Boost=false(0), SysFreq=40MHz(0), RDIV=15(16MHz-1)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0C_CLK_SEL_INIT, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_32, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  // TODO: Custom board will have to use Internal Oscillator
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_EXT_NOT_INT_FIELD, 1);	/* 0: Internal 15MHz oscillator
+																				 * 1: External clock source selected by EXT_NOT_XTAL.
+																				 */
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_XTAL_CFG_FIELD, 3);		/* 0: RESERVED
+																				 * 1: 8MHz
+																				 * 2: RESERVED
+																				 * 3: 16MHz
+																				 * 4: RESERVED
+																				 * 5: 24MHz-25MHz
+																				 * 6: 32MHz
+																				 * 7: RESERVED
+																				 */
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_EXT_NOT_XTAL_FIELD, 0); /* 0: External oscillator
+																				 * 1: External clock
+																				 */
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_XTAL_BOOST_FIELD, 0);	// Default: 0
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_PLL_OUT_SEL_FIELD, 1);	/* 0. Use the internal oscillator
+																				 * 1: Use the PLL
+																				 * 2: RESERVED
+																				 * 3: RESERVED
+																				 */
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_RDIV_FIELD, 15);		/* Divider of the PLL input frequency. Must be set to the input frequency in
+																				 * MHz minus one.
+																				 * The internal oscillator has a frequency of 15 MHz. For Internal oscillator
+																				 * input (EXT_NOT_INT=0), RDIV must be set to 14.
+																				 * Default: 14
+																				 */
+  reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_SYS_CLK_DIV_FIELD, 0);  /* 0: 40MHz
+																				 * 1: RESERVED
+																				 * 2: RESERVED
+																				 * 3: 15MHz
+																				 * Note: Only change this setting during the workaround for Erratum 1:
+																				 * Bootloader OTP_BURN Command.
+																				 */
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0C_CLK_SEL_INIT, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_32, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  HAL_Delay(50); // PLL stabilization
+  // TODO: read PLL_STATUS reg to confirm configuration correctness
+  /* Note: Running the motor control system is only supported with system clock configured to 40 MHz (PLL_OUT_SEL=1
+   * 	   with a valid PLL configuration and SYS_CLK_DIV=0).
+   * Note: The clock configuration should be written with a single WRITE_32 or WRITE_32_INC command.
+   */
+
+  // 6. APP CONFIG 0 (HALL)
+  // Enable=true, U=2, V=3, W=4
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_10_APP_CONFIG_0, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_10_APP_CONFIG_0_HALL_ENABLE_FIELD, 1);  // Default: 0
+  reg = field_update16(reg, CONFIG_BOOT_10_APP_CONFIG_0_HALL_UX_FIELD, 0);		/* 0: GPIO2	<--
+																				 * 1: GPIO7
+																				 * 2: GPIO9
+																				 * 3: RESERVED
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_10_APP_CONFIG_0_HALL_V_FIELD, 0);		/* 0: GPIO3	<--
+																				 * 1: GPIO15
+																				 * 2: RESERVED
+																				 * 3: RESERVED
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_10_APP_CONFIG_0_HALL_WY_FIELD, 0);		/* 0: GPIO4	<--
+																				 * 1: GPIO8
+																				 * 2: GPIO10
+																				 * 3: RESERVED
+																				 */
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_10_APP_CONFIG_0, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 7. APP CONFIG 2 (WATCHDOG)
+  // Enable=true(Disable=0), Timeout=2000ms(7)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_12_APP_CONFIG_2, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_12_APP_CONFIG_2_WDG_DISABLE_FIELD, 1);	// Default: 0
+//      reg = field_update16(reg, CONFIG_BOOT_12_APP_CONFIG_2_WDG_TIMEOUT_FIELD, 7); // removed, could not find documentation
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_12_APP_CONFIG_2, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 8. GPIO INIT (GPIO 5, 17, 18)
+  // GPIO17/18: Input, Pulldown. GPIO5: Analog.
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0B_GPIO_16_18_INIT, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO17_OUT_EN_FIELD, 0); // Input
+  reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO17_PD_FIELD, 1);     // Pulldown
+  reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO18_OUT_EN_FIELD, 0); // Input
+  reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO18_PD_FIELD, 1);     // Pulldown
+  reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO5_ANALOG_EN_FIELD, 1); // GPIO5 Analog
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0B_GPIO_16_18_INIT, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 9. BOOTSTRAP
+  // Mode=Param(2), StartApp=true(1)
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_04_BOOTSTRAP, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_READ_16, 0, &reg);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  reg = field_update16(reg, CONFIG_BOOT_04_BOOTSTRAP_BOOT_APP_FIELD, 2);		// I assume this field is BOOT_MODE from datasheet
+																				/* 0: RESERVED
+																				 * 1: Register mode
+																				 * 2: Parameter mode
+																				 * 3: RESERVED
+																				 */
+  reg = field_update16(reg, CONFIG_BOOT_04_BOOTSTRAP_LOAD_ROM_CODE_FIELD, 1);	// I assume this field is START_MOTOR_CTRL from datasheet
+																				// Default: 0
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_04_BOOTSTRAP, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
+  if (blStatus != TMC9660_BLSTATUS_OK) {
+	  ERR_Handler(__LINE__);
+  }
+
+  // 10. FINAL BOOT
+  UART_Printf("Soft-Config Applied. Transitioning to Parameter Mode...\r\n");
+  // Note: confused whether BL cmd: CONFIG_BOOT_04_BOOTSTRAP_LOAD_ROM_CODE_FIELD or if param cmd: TMC9660_CMD_BOOT will start program
+  HAL_Delay(200);
+
+  uint32_t voltage_motor = tmc9660_param_getParameter(tmc9660_id, TMC9660_PARAM_SUPPLY_VOLTAGE);
+  if (voltage_motor > 0) {
+	  tmc_detected = true;
+	  UART_Printf("SUCCESS: IC Active in Parameter Mode.\r\n");
+	  UART_Printf("VM: %d.%d\n", voltage_motor / 10, voltage_motor % 10); // unit conversion 100mV -> 1V
+  }
+  /* USER CODE END 2 */
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
