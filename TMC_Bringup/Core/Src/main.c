@@ -210,6 +210,99 @@ bool tmc9660_app_GotoBootMode(uint16_t icID) {
 
 	return ret;
 }
+
+/**
+ * @brief Converts TMC9660 raw voltage units (100mV) to Millivolts (mV).
+ * @param volt100mV Raw value from IC (e.g., 80 for 8.0V).
+ * @return uint32_t Equivalent value in millivolts (e.g., 8000).
+ */
+static inline uint32_t tmc9660_app_volt100mVtoMV(uint32_t volt100mV) {
+    return volt100mV * 100;
+}
+
+/* Helper: Step 1 - Verify Motor Supply Voltage >= 8V */
+static bool verifyMotorVoltage(uint16_t icID) {
+    // 1. Get raw parameter (Units: 100mV)
+	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
+    uint32_t raw_voltage = tmc9660_param_getParameter(icID, TMC9660_PARAM_SUPPLY_VOLTAGE);
+
+    // 2. Convert to Millivolts (mV)
+    uint32_t voltage_mv = tmc9660_app_volt100mVtoMV(raw_voltage);
+
+    // 3. Perform threshold check (8000mV)
+    if (voltage_mv < 8000) {
+        UART_Printf("Error: Voltage is %ld mV (threshold 8000 mV)\r\n", voltage_mv);
+        return false;
+    }
+
+    return true;
+}
+
+/* Helper: Step 2 - Set Motor Type to BLDC */
+static bool setupMotorType(uint16_t icID) {
+    // 3 = 3-Phase BLDC/PMSM
+	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
+    return tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_TYPE, 3);
+}
+
+/* Helper: Step 3 - Set Pole Pairs */
+static bool setupPolePairs(uint16_t icID) {
+    // QBL5704-94-04-032 has 4 poles = 2 pole pairs
+	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
+    return tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_POLE_PAIRS, 2);
+}
+
+/* Helper: Step 4 - Set Commutation Mode to FOC Hall */
+static bool setupCommutationMode(uint16_t icID) {
+    // 6 = FOC based on Hall Sensor feedback
+	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
+    return tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 6);
+}
+
+/**
+ * @brief Configures the TMC9660 for a Hall-based FOC test with the QBL5704 motor.
+ * @param icID The identifier for the IC.
+ * @return bool True if all steps passed, False otherwise.
+ */
+bool tmc9660_app_setupQBL5704BLDCHallFeedbackTest(uint16_t icID) {
+	bool test;
+    UART_Printf("\r\n--- Starting QBL5704 Setup ---\r\n");
+
+    // Step 1: Voltage Verification
+    test = verifyMotorVoltage(icID);
+    if (test == false) {
+        UART_Printf("Error: Supply voltage too low (< 8V). Check VS power.\r\n");
+        return false;
+    }
+    UART_Printf("1. Voltage Check: OK\r\n");
+
+    // Step 2: Configure Motor Type
+    test = setupMotorType(icID);
+    if (test == false) {
+        UART_Printf("Error: Failed to set Motor Type.\r\n");
+        return false;
+    }
+    UART_Printf("2. Motor Type: BLDC\r\n");
+
+    // Step 3: Configure Pole Pairs
+    test = setupPolePairs(icID);
+    if (test == false) {
+        UART_Printf("Error: Failed to set Pole Pairs.\r\n");
+        return false;
+    }
+    UART_Printf("3. Pole Pairs: 2\r\n");
+
+    // Step 4: Configure Commutation
+    test = setupCommutationMode(icID);
+    if (test == false) {
+        UART_Printf("Error: Failed to set Commutation Mode.\r\n");
+        return false;
+    }
+    UART_Printf("4. Commutation: FOC Hall\r\n");
+
+    UART_Printf("--- QBL5704 Setup Successful ---\r\n");
+    return true;
+}
 /* USER CODE END 0 */
 
 /**
@@ -575,6 +668,16 @@ int main(void)
 	  tmc_detected = true;
 	  UART_Printf("SUCCESS: IC Active in Parameter Mode.\r\n");
 	  UART_Printf("VM: %d.%d\n", mV_voltage_motor / 10, mV_voltage_motor % 10); // unit conversion 100mV -> 1V
+  }
+
+
+  bool setupTest = tmc9660_app_setupQBL5704BLDCHallFeedbackTest(tmc9660_id);
+  if ( setupTest == true ) {
+	  UART_Printf("Motor Test Setup Success\n");
+  }
+  else
+  {
+	  UART_Printf("Motor Test Setup Fail\n");
   }
   /* USER CODE END 2 */
 
