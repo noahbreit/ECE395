@@ -59,6 +59,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
+bool tmc9660_app_GotoBootMode(uint16_t icID);
 void tmc9660_UART_WriteRead(uint8_t channel, uint8_t *data, size_t writeLength, size_t readLength);
 void UART_Printf(const char* fmt, ...);
 /* USER CODE END PFP */
@@ -184,6 +185,31 @@ void ERR_Handler(int line) {
 	UART_Printf("\nFailure @ line: %d\n", line);
 	while(1) {};
 }
+
+bool tmc9660_app_GotoBootMode(uint16_t icID) {
+	// assuming tmc9660_id global set
+	bool ret = false;
+	uint32_t rVal = 0;
+	TMC9660BlStatus blStatus;
+
+	// 1. Try returning from Register Mode
+	// TODO: improve TMC-API to return device status byte reply
+    tmc9660_reg_returnToBootloader(icID);
+    HAL_Delay(100); // Delay for possible Init
+
+    // 2. Try returning from Parameter Mode
+    // TODO: improve TMC-API to return device status byte reply
+    tmc9660_param_returnToBootloader(icID);
+    HAL_Delay(100); // Delay for possible Init
+
+	// 3. Confirm Boot Mode
+	blStatus = tmc9660_bl_sendCommand(icID, TMC9660_BLCMD_GET_INFO, 0, &rVal);
+	if ( blStatus == TMC9660_BLSTATUS_OK ) {
+		ret = true;
+	}
+
+	return ret;
+}
 /* USER CODE END 0 */
 
 /**
@@ -231,8 +257,9 @@ int main(void)
   // Note: Fields in Steps #1-#5 are from TMC9660 Datasheet
   // Note: Fields in Steps #6 are from TMC9660 Parameter Mode Guide
 
-  blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_GET_INFO, 0, &rVal);
-  if (blStatus != TMC9660_BLSTATUS_OK) {
+  bool bootInit = tmc9660_app_GotoBootMode(tmc9660_id);
+  if (bootInit == false) {
+	  UART_Printf("Failed to enter Boot Mode\n");
 	  ERR_Handler(__LINE__);
   }
 
@@ -543,11 +570,11 @@ int main(void)
   // Note: confused whether BL cmd: CONFIG_BOOT_04_BOOTSTRAP_LOAD_ROM_CODE_FIELD or if param cmd: TMC9660_CMD_BOOT will start program
   HAL_Delay(200);
 
-  uint32_t voltage_motor = tmc9660_param_getParameter(tmc9660_id, TMC9660_PARAM_SUPPLY_VOLTAGE);
-  if (voltage_motor > 0) {
+  uint32_t mV_voltage_motor = tmc9660_param_getParameter(tmc9660_id, TMC9660_PARAM_SUPPLY_VOLTAGE);
+  if (mV_voltage_motor > 0) {
 	  tmc_detected = true;
 	  UART_Printf("SUCCESS: IC Active in Parameter Mode.\r\n");
-	  UART_Printf("VM: %d.%d\n", voltage_motor / 10, voltage_motor % 10); // unit conversion 100mV -> 1V
+	  UART_Printf("VM: %d.%d\n", mV_voltage_motor / 10, mV_voltage_motor % 10); // unit conversion 100mV -> 1V
   }
   /* USER CODE END 2 */
 
