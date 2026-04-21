@@ -303,6 +303,77 @@ bool tmc9660_app_setupQBL5704BLDCHallFeedbackTest(uint16_t icID) {
     UART_Printf("--- QBL5704 Setup Successful ---\r\n");
     return true;
 }
+
+/**
+ * @brief Performs electrical alignment using Open Loop Current Mode (4).
+ * @param icID The identifier for the IC.
+ * @return bool True if alignment was successful.
+ */
+bool tmc9660_app_alignQBL5704HallOffset(uint16_t icID) {
+    uint32_t hall_angle_at_zero = 0;
+
+    UART_Printf("\r\n--- Starting Hall Alignment (Current Mode 4) ---\r\n");
+
+    // 1. Enter Open Loop Current Mode (4)
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 4);
+
+    // 2. Set the target electrical angle to 0
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_OPENLOOP_ANGLE, 0);
+
+    // 3. Apply alignment current (e.g., 800 units for QBL5704)
+    // This locks the rotor to the magnetic 0° position.
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_OPENLOOP_CURRENT, 800);
+
+    // 4. Wait for the rotor to physically settle at the magnetic pole
+    HAL_Delay(1200);
+
+    // 5. Read the raw Hall electrical angle
+    hall_angle_at_zero = tmc9660_param_getParameter(icID, TMC9660_PARAM_HALL_PHI_E);
+
+    UART_Printf("Rotor Locked at 0 deg. Hall Angle Reported: %ld\r\n", hall_angle_at_zero);
+
+    // 6. Set the Offset to bridge the gap between Sensor 0 and Magnetic 0
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_HALL_PHI_E_OFFSET, hall_angle_at_zero);
+
+    // 7. Cleanup: Disable current and return to a safe state
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_OPENLOOP_CURRENT, 0);
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 0);
+
+    UART_Printf("Offset Programmed. IC now calibrated for QBL5704.\r\n");
+    return true;
+}
+
+
+/**
+ * @brief Simple test for the QBL5704 motor.
+ * Sets safety limits and applies a 200mA torque command.
+ */
+bool tmc9660_app_runQBL5704BLDCHallFeedbackTest(uint16_t icID) {
+	// 0. Setup Necessary Parameter Fields
+	// Side Effect: COMMUTATION_MODE=FOC_HALL(6),
+	bool test = tmc9660_app_setupQBL5704BLDCHallFeedbackTest(icID);
+	if (test == false) {
+		return false;
+	}
+
+    // 1. Set Maximum Current & Torque Limits (ID 6)
+    // In FOC, these are controlled by the same parameter (Max Iq).
+    // Setting to 1000 units (Assuming 1.0A / 1000mA limit).
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_MAX_TORQUE, 1000);
+
+    // 2. Set Maximum Voltage Limit (ID 5)
+    // Setting to 240 units (24.0V limit @ 100mV per unit).
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_OUTPUT_VOLTAGE_LIMIT, 240);
+
+    // 3. Set Target Torque (ID 104)
+    // Command a constant 200mA torque producing current (Iq).
+    // This will cause the motor to spin if the Hall alignment is correct.
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_TARGET_TORQUE, 200);
+    HAL_Delay(5000);
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_TARGET_TORQUE, 0);
+
+    return true;
+}
 /* USER CODE END 0 */
 
 /**
@@ -670,15 +741,25 @@ int main(void)
 	  UART_Printf("VM: %d.%d\n", mV_voltage_motor / 10, mV_voltage_motor % 10); // unit conversion 100mV -> 1V
   }
 
-
-  bool setupTest = tmc9660_app_setupQBL5704BLDCHallFeedbackTest(tmc9660_id);
-  if ( setupTest == true ) {
-	  UART_Printf("Motor Test Setup Success\n");
+  bool test = tmc9660_app_alignQBL5704HallOffset(tmc9660_id);
+  if ( test == true ) {
+  	  UART_Printf("Motor Test Setup Success\n");
   }
   else
   {
 	  UART_Printf("Motor Test Setup Fail\n");
   }
+
+  // REMOVE FOR BOARD TESTING
+//  test = tmc9660_app_runQBL5704BLDCHallFeedbackTest(tmc9660_id);
+//  if ( test == true ) {
+//	  UART_Printf("Motor Test Run Success\n");
+//  }
+//  else
+//  {
+//  	  UART_Printf("Motor Test Run Fail\n");
+//  }
+
   /* USER CODE END 2 */
 
   /* USER CODE END 2 */
