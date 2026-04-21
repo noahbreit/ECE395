@@ -1,0 +1,4 @@
+../Drivers/tmc/helpers/Functions.c:11:9:tmc_limitInt	24	static
+../Drivers/tmc/helpers/Functions.c:21:9:tmc_limitS64	24	static
+../Drivers/tmc/helpers/Functions.c:52:9:tmc_sqrti	24	static
+../Drivers/tmc/helpers/Functions.c:168:9:tmc_filterPT1	48	static
