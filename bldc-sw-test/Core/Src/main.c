@@ -114,7 +114,8 @@ bool tmc9660_readWriteUART(uint16_t icID, uint8_t *data, size_t writeLength, siz
 		// Read bytes one by one until we get a non-zero byte.
 		// This silently discards the 0x00 glitch and captures the true start byte (e.g., 255).
 		do {
-			if (HAL_UART_Receive(&huart1, &byteIn, 1, 50) != HAL_OK) {
+			HAL_StatusTypeDef status = HAL_UART_Receive(&huart1, &byteIn, 1, 50);
+			if (status != HAL_OK) {
 				return false; // Timeout
 			}
 		} while (byteIn == 0x00);
@@ -416,6 +417,7 @@ int main(void)
   HAL_Delay(2000);
 
   UART_Printf("\r\n--- TMC9660 Boot Configuration ---\r\n");
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
   // Can burn these to One-Time-Programming Memory, but not necessary
     // Instead, just run following code block on boot
@@ -445,7 +447,7 @@ int main(void)
     if (blStatus != TMC9660_BLSTATUS_OK) {
   	  ERR_Handler(__LINE__);
     }
-    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT1_FIELD, 3); 				/* 0: LDO disabled
+    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT1_FIELD, 0); 				/* 0: LDO disabled
   																				 * 1: 2.5V
   																				 * 2: 3.3V
   																				 * 3: 5.0V <--
@@ -455,7 +457,7 @@ int main(void)
   																				 * 2: 0.75ms
   																				 * 3: 0.37ms
   																				 */
-    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT2_FIELD, 2);				/* 0: LDO disabled
+    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT2_FIELD, 0);				/* 0: LDO disabled
   																				 * 1: 2.5V
   																				 * 2: 3.3V <--
   																				 * 3: 5.0V
@@ -474,6 +476,9 @@ int main(void)
     if (blStatus != TMC9660_BLSTATUS_OK) {
     	  ERR_Handler(__LINE__);
     }
+
+//    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+
     // 2. UART & ADDRESSES
     // ChipAddr=1, HostAddr=255
     blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_01_ADDRESS, &rVal);
