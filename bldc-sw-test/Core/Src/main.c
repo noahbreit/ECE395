@@ -63,6 +63,16 @@ static void MX_USART1_UART_Init(void);
 bool tmc9660_app_GotoBootMode(uint16_t icID);
 void tmc9660_UART_WriteRead(uint8_t channel, uint8_t *data, size_t writeLength, size_t readLength);
 void UART_Printf(const char* fmt, ...);
+void tmc9660_app_HoldInResetUntilReady(void);
+void tmc9660_app_ReportConditionAndHalt(void);
+bool tmc9660_app_VerifyPLLStatus(uint16_t icID);
+void tmc9660_app_DebugStatus(uint16_t icID);
+void tmc9660_app_DebugGeneralStatus(uint16_t icID);
+void tmc9660_app_DebugGeneralErrors(uint16_t icID);
+void tmc9660_app_DebugGDRVErrors(uint16_t icID);
+bool tmc9660_app_ClearErrorsManual(uint16_t icID, uint32_t sysMask, uint32_t gdrvMask);
+void tmc9660_app_EnableDrive(void);
+void tmc9660_app_DisableDrive(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -141,6 +151,10 @@ void UART_Printf(const char* fmt, ...) {
     int len = vsnprintf(buf, sizeof(buf), fmt, args);
     va_end(args);
     if (len > 0) CDC_Transmit_FS((uint8_t*)buf, len);
+
+    // Allow Print to goto serial
+    // TODO: MUST REMOVE DELAY if ported to RTOS
+    HAL_Delay(5);
 }
 
 void Test_TMC9660_Status(int32_t status) {
@@ -183,8 +197,314 @@ void Test_TMC9660_Status(int32_t status) {
     }
 }
 
+/* * Holds the TMC9660 in hardware reset and waits for a user start command.
+ * Note: Uses PA15 (RSTN) and monitors PB9 (FAULTN) per schematic labels.
+ */
+void tmc9660_app_HoldInResetUntilReady(void) {
+    uint8_t user_cmd = 0;
+    extern uint8_t UserRxBufferFS[]; // From usbd_cdc_if.c
+
+    // 1. Assert Hardware Reset (Active Low)
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+
+    // 2. Ensure Wake is high (PB8 is DRIVER_WAKE in schematic)
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+
+    // 3. Ensure Drive_En is low (PB3)
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+
+    UART_Printf("\r\n[SYSTEM] TMC9660 held in RESET to prevent brownout.\r\n");
+    UART_Printf("[SYSTEM] Wait for DC link capacitors to stabilize...\r\n");
+    UART_Printf("[SYSTEM] Press 's' to release driver and start init: ");
+
+    // 3. Blocking loop until 's' is received via USB CDC
+    while (user_cmd != 's') {
+        // Simple polling of the CDC receive buffer
+        if (UserRxBufferFS[0] != 0) {
+            user_cmd = UserRxBufferFS[0];
+            UserRxBufferFS[0] = 0; // Clear for next use
+        }
+
+        // Optional: Monitor Fault pin (PB9) while waiting
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9) == GPIO_PIN_RESET) {
+            // Add warning if driver indicates a hardware fault during standby
+        }
+
+        HAL_Delay(10);
+    }
+
+    // 5. Release Reset
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_SET);
+
+    // 6. Delay Block
+    HAL_Delay(100); // Allow TMC9660 internal LDOs to ramp up
+    UART_Printf("\r\n[SYSTEM] Driver Released. Proceeding to Init...\r\n");
+}
+
+/**
+ * @brief Protects the system by disabling the driver and reporting status.
+ * To be called in Error_Handler or safety-critical loops.
+ */
+void tmc9660_app_ReportConditionAndHalt(void) {
+    // 1. Assert Safe State (Active Off)
+    // DRIVER_DRV_EN (PB3): Setting LOW to disable the gate driver bridge
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+
+    // DRIVER_RSTN (PA15): Pulling LOW to hold the TMC9660 in Hardware Reset
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_15, GPIO_PIN_RESET);
+
+    // 2. Read Fault Condition
+    GPIO_PinState fault_state = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_9);
+
+    // 3. Serial Reporting
+    UART_Printf("\r\n[FATAL] System Halted for Protection.\r\n");
+    if (fault_state == GPIO_PIN_RESET) {
+        UART_Printf("[STATUS] DRIVER_FAULTN: ACTIVE (Fault Detected)\r\n");
+    } else {
+        UART_Printf("[STATUS] DRIVER_FAULTN: CLEAR (Software/Logic Error)\r\n");
+    }
+
+    // 4. Visual Warning: Solid Red LED
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET);
+}
+
+/**
+ * @brief Verifies that the TMC9660 PLL is locked and correctly configured.
+ * Target: 40MHz system clock with internal oscillator.
+ * @return bool True if PLL is locked and settings match required 40MHz operation.
+ */
+bool tmc9660_app_VerifyPLLStatus(uint16_t icID) {
+    uint32_t regValue = 0;
+    uint32_t dummy = 0;
+
+    // 1. Set the Bootloader address to the Clock Config register
+    // Address: 0x00020018
+    if (tmc9660_bl_sendCommand(icID, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0C_CLK_SEL_INIT, &dummy) != TMC9660_BLSTATUS_OK) {
+        return false;
+    }
+
+    // 2. Read the 32-bit register value
+    if (tmc9660_bl_sendCommand(icID, TMC9660_BLCMD_READ_32, 0, &regValue) != TMC9660_BLSTATUS_OK) {
+        return false;
+    }
+
+    // 3. Extract Fields using the Library Macros
+    uint8_t pll_lock = (uint8_t)field_extract32(regValue, CONFIG_BOOT_0C_CLK_SEL_INIT_PLL_STATUS_FIELD);
+    uint8_t out_sel  = (uint8_t)field_extract32(regValue, CONFIG_BOOT_0C_CLK_SEL_INIT_PLL_OUT_SEL_FIELD);
+    uint8_t clk_div  = (uint8_t)field_extract32(regValue, CONFIG_BOOT_0C_CLK_SEL_INIT_SYS_CLK_DIV_FIELD);
+
+    // 4. Report Status over Serial
+    UART_Printf("\r\n--- PLL HARDWARE CHECK ---\r\n");
+    UART_Printf("[STATUS] Lock Bit: %s\r\n", (pll_lock == 1) ? "LOCKED" : "UNLOCKED (FAIL)");
+    UART_Printf("[STATUS] OUT_SEL : %d (Expect 1 for PLL)\r\n", out_sel);
+    UART_Printf("[STATUS] CLK_DIV : %d (Expect 0 for 40MHz)\r\n", clk_div);
+
+    // 5. Logical Verification
+    // Success requires Lock bit active AND System clock routed through the PLL (OUT_SEL=1)
+    // and no further division (SYS_CLK_DIV=0)
+    if (pll_lock == 1 && out_sel == 1 && clk_div == 0) {
+        UART_Printf("[RESULT] Clock stable at 40MHz.\r\n");
+        return true;
+    }
+	UART_Printf("[RESULT] PLL Configuration Failed!\r\n");
+
+
+    return false;
+}
+
+void tmc9660_app_DebugStatus(uint16_t icID) {
+    // Read the Status Flags (Parameters 110, 300)
+	tmc9660_app_DebugGeneralStatus(icID);
+	tmc9660_app_DebugGeneralErrors(icID);
+	tmc9660_app_DebugGDRVErrors(icID);
+}
+
+/**
+ * @brief Reports all active General Status flags.
+ * Uses TMC9660_PARAM_GENERAL_STATUS_FLAGS (289).
+ */
+void tmc9660_app_DebugGeneralStatus(uint16_t icID) {
+    uint32_t status = tmc9660_param_getParameter(icID, TMC9660_PARAM_GENERAL_STATUS_FLAGS);
+    if (status == 0) return;
+
+    UART_Printf("\r\n--- TMC9660 GENERAL STATUS ---\r\n");
+    UART_Printf("[STATUS] Raw: 0x%08lX\r\n", status);
+
+    // --- Regulation Modes ---
+    if (status & 0x00000001) UART_Printf(" . REGULATION_STOPPED\r\n");
+    if (status & 0x00000002) UART_Printf(" . REGULATION_TORQUE_ACTIVE\r\n");
+    if (status & 0x00000004) UART_Printf(" . REGULATION_VELOCITY_ACTIVE\r\n");
+    if (status & 0x00000008) UART_Printf(" . REGULATION_POSITION_ACTIVE\r\n");
+
+    // --- Configuration State ---
+    if (status & 0x00000010) UART_Printf(" . CONFIG_STORED_SUCCESS\r\n");
+    if (status & 0x00000020) UART_Printf(" . CONFIG_LOADED_SUCCESS\r\n");
+    if (status & 0x00000040) UART_Printf(" . CONFIG_READ_ONLY\r\n");
+    if (status & 0x00000080) UART_Printf(" . TMCL_SCRIPT_READ_ONLY\r\n");
+
+    // --- Motion & Protection ---
+    if (status & 0x00000100) UART_Printf(" . BRAKE_CHOPPER_ACTIVE\r\n");
+    if (status & 0x00000200) UART_Printf(" . POSITION_REACHED\r\n");
+    if (status & 0x00000400) UART_Printf(" . VELOCITY_REACHED\r\n");
+    if (status & 0x00000800) UART_Printf(" . ADC_OFFSET_CALIBRATED\r\n");
+
+    // --- Ramper Status ---
+    if (status & 0x00001000) UART_Printf(" . RAMPER_LATCHED\r\n");
+    if (status & 0x00002000) UART_Printf(" . RAMPER_EVENT_STOP_SWITCH\r\n");
+    if (status & 0x00004000) UART_Printf(" . RAMPER_EVENT_STOP_DEVIATION\r\n");
+    if (status & 0x00008000) UART_Printf(" . RAMPER_VELOCITY_REACHED\r\n");
+    if (status & 0x00010000) UART_Printf(" . RAMPER_POSITION_REACHED\r\n");
+    if (status & 0x00020000) UART_Printf(" . RAMPER_SECOND_MOVE_REQUIRED\r\n");
+
+    // --- Monitoring & Braking ---
+    if (status & 0x00040000) UART_Printf(" . IIT_1_MONITOR_ACTIVE\r\n");
+    if (status & 0x00080000) UART_Printf(" . IIT_2_MONITOR_ACTIVE\r\n");
+    if (status & 0x00100000) UART_Printf(" . REFSEARCH_FINISHED\r\n");
+    if (status & 0x00200000) UART_Printf(" . Y2_USED_FOR_BRAKING\r\n");
+
+    // --- Hardware Peripheral Availability ---
+    if (status & 0x00800000) UART_Printf(" . STEPDIR_INPUT_AVAILABLE\r\n");
+    if (status & 0x01000000) UART_Printf(" . RIGHT_REF_SWITCH_AVAILABLE\r\n");
+    if (status & 0x02000000) UART_Printf(" . HOME_REF_SWITCH_AVAILABLE\r\n");
+    if (status & 0x04000000) UART_Printf(" . LEFT_REF_SWITCH_AVAILABLE\r\n");
+    if (status & 0x08000000) UART_Printf(" . ABN2_FEEDBACK_AVAILABLE\r\n");
+    if (status & 0x10000000) UART_Printf(" . HALL_FEEDBACK_AVAILABLE\r\n");
+    if (status & 0x20000000) UART_Printf(" . ABN1_FEEDBACK_AVAILABLE\r\n");
+    if (status & 0x40000000) UART_Printf(" . SPI_FLASH_AVAILABLE\r\n");
+    if (status & 0x80000000) UART_Printf(" . I2C_EEPROM_AVAILABLE\r\n");
+}
+
+void tmc9660_app_DebugGDRVErrors(uint16_t icID) {
+    uint32_t gdrv = tmc9660_param_getParameter(icID, TMC9660_PARAM_GDRV_ERROR_FLAGS);
+    if (gdrv == 0) return;
+
+    UART_Printf("\r\n[GDRV FAULT] Raw: 0x%08lX\r\n", gdrv);
+
+    // --- LOW SIDE OVERCURRENT ---
+    if (gdrv & 0x00000001) UART_Printf(" ! U_LOW_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00000002) UART_Printf(" ! V_LOW_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00000004) UART_Printf(" ! W_LOW_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00000008) UART_Printf(" ! Y2_LOW_SIDE_OVERCURRENT\r\n");
+
+    // --- LOW SIDE DISCHARGE SHORT ---
+    if (gdrv & 0x00000010) UART_Printf(" ! U_LOW_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00000020) UART_Printf(" ! V_LOW_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00000040) UART_Printf(" ! W_LOW_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00000080) UART_Printf(" ! Y2_LOW_SIDE_DISCHARGE_SHORT\r\n");
+
+    // --- LOW SIDE CHARGE SHORT ---
+    if (gdrv & 0x00000100) UART_Printf(" ! U_LOW_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x00000200) UART_Printf(" ! V_LOW_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x00000400) UART_Printf(" ! W_LOW_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x00000800) UART_Printf(" ! Y2_LOW_SIDE_CHARGE_SHORT\r\n");
+
+    // --- BOOTSTRAP UNDERVOLTAGE ---
+    if (gdrv & 0x00001000) UART_Printf(" ! U_BOOTSTRAP_UNDERVOLTAGE\r\n");
+    if (gdrv & 0x00002000) UART_Printf(" ! V_BOOTSTRAP_UNDERVOLTAGE\r\n");
+    if (gdrv & 0x00004000) UART_Printf(" ! W_BOOTSTRAP_UNDERVOLTAGE\r\n");
+    if (gdrv & 0x00008000) UART_Printf(" ! Y2_BOOTSTRAP_UNDERVOLTAGE\r\n");
+
+    // --- HIGH SIDE OVERCURRENT ---
+    if (gdrv & 0x00010000) UART_Printf(" ! U_HIGH_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00020000) UART_Printf(" ! V_HIGH_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00040000) UART_Printf(" ! W_HIGH_SIDE_OVERCURRENT\r\n");
+    if (gdrv & 0x00080000) UART_Printf(" ! Y2_HIGH_SIDE_OVERCURRENT\r\n");
+
+    // --- HIGH SIDE DISCHARGE SHORT ---
+    if (gdrv & 0x00100000) UART_Printf(" ! U_HIGH_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00200000) UART_Printf(" ! V_HIGH_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00400000) UART_Printf(" ! W_HIGH_SIDE_DISCHARGE_SHORT\r\n");
+    if (gdrv & 0x00800000) UART_Printf(" ! Y2_HIGH_SIDE_DISCHARGE_SHORT\r\n");
+
+    // --- HIGH SIDE CHARGE SHORT  ---
+    if (gdrv & 0x01000000) UART_Printf(" ! U_HIGH_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x02000000) UART_Printf(" ! V_HIGH_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x04000000) UART_Printf(" ! W_HIGH_SIDE_CHARGE_SHORT\r\n");
+    if (gdrv & 0x08000000) UART_Printf(" ! Y2_HIGH_SIDE_CHARGE_SHORT\r\n");
+
+    // --- GLOBAL GATE DRIVER ERRORS ---
+    if (gdrv & 0x20000000) UART_Printf(" ! GDRV_UNDERVOLTAGE (Logic Rail Fail)\r\n");
+    if (gdrv & 0x40000000) UART_Printf(" ! GDRV_LOW_VOLTAGE (Marginal Logic Rail)\r\n");
+    if (gdrv & 0x80000000) UART_Printf(" ! GDRV_SUPPLY_UNDERVOLTAGE (VEXT1 fail)\r\n");
+}
+
+void tmc9660_app_DebugGeneralErrors(uint16_t icID) {
+    uint32_t err = tmc9660_param_getParameter(icID, TMC9660_PARAM_GENERAL_ERROR_FLAGS);
+    if (err == 0) return;
+
+    UART_Printf("\r\n[SYS ERROR] Raw: 0x%08lX\r\n", err);
+    if (err & 0x00000001) UART_Printf(" ! CONFIG_ERROR\r\n");
+    if (err & 0x00000002) UART_Printf(" ! TMCL_SCRIPT_ERROR\r\n");
+    if (err & 0x00000004) UART_Printf(" ! HOMESWTICH_NOT_FOUND\r\n");
+    if (err & 0x00000020) UART_Printf(" ! HALL_ERROR\r\n");
+    if (err & 0x00000200) UART_Printf(" ! WATCHDOG_EVENT\r\n");
+    if (err & 0x00002000) UART_Printf(" ! EXT_TEMP_EXCEEDED\r\n");
+    if (err & 0x00004000) UART_Printf(" ! CHIP_TEMP_EXCEEDED\r\n");
+    if (err & 0x00010000) UART_Printf(" ! I2T_1_EXCEEDED\r\n");
+    if (err & 0x00020000) UART_Printf(" ! I2T_2_EXCEEDED\r\n");
+    if (err & 0x00040000) UART_Printf(" ! EXT_TEMP_WARNING\r\n");
+    if (err & 0x00080000) UART_Printf(" ! SUPPLY_OVERVOLTAGE_WARNING\r\n");
+    if (err & 0x00100000) UART_Printf(" ! SUPPLY_UNDERVOLTAGE_WARNING\r\n");
+    if (err & 0x00200000) UART_Printf(" ! ADC_IN_OVERVOLTAGE\r\n");
+    if (err & 0x00400000) UART_Printf(" ! FAULT_RETRY_HAPPENED\r\n");
+    if (err & 0x00800000) UART_Printf(" ! FAULT_RETRIES_FAILED\r\n");
+    if (err & 0x01000000) UART_Printf(" ! CHIP_TEMP_WARNING\r\n");
+    if (err & 0x04000000) UART_Printf(" ! HEARTBEAT_STOPPED\r\n");
+}
+
+/**
+ * @brief Clears active latching errors using setParameter (SAP) and verifies the result.
+ * @param icID The identifier for the IC.
+ * @param sysMask Bitmask for General Error Flags (Param 299).
+ * @param gdrvMask Bitmask for Gate Driver Error Flags (Param 300).
+ * @return bool True if all RWC bits in the provided masks were successfully cleared.
+ */
+bool tmc9660_app_ClearErrorsManual(uint16_t icID, uint32_t sysMask, uint32_t gdrvMask) {
+  // 1. Clear latching General Errors (RWC bits, e.g., 0x20 for HALL_ERROR)
+  //
+  if (sysMask != 0) {
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_GENERAL_ERROR_FLAGS, sysMask);
+  }
+
+  // 2. Clear latching Gate Driver Errors (All bits are RWC)
+  if (gdrvMask != 0) {
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_GDRV_ERROR_FLAGS, gdrvMask);
+  }
+
+  // 3. Small delay to allow internal state machines to update
+  HAL_Delay(25);
+
+  // 4. Read back and verify
+  uint32_t sysActual = tmc9660_param_getParameter(icID, TMC9660_PARAM_GENERAL_ERROR_FLAGS);
+  uint32_t gdrvActual = tmc9660_param_getParameter(icID, TMC9660_PARAM_GDRV_ERROR_FLAGS);
+
+  // Note: Bits 0 and 1 of Param 299 (CONFIG/SCRIPT) are Read-Only status indicators
+  // and will only clear when the underlying configuration is valid.
+  uint32_t remainingSys = sysActual & sysMask;
+  uint32_t remainingGdrv = gdrvActual & gdrvMask;
+
+  if (remainingSys == 0 && remainingGdrv == 0) {
+    UART_Printf("[CLEAR] Success: Requested latching bits cleared.\r\n");
+    return true;
+  }
+
+  UART_Printf("[CLEAR] Failed: Flags 0x%08lX (SYS) and 0x%08lX (GDRV) still active.\r\n", remainingSys, remainingGdrv);
+  return false;
+}
+
+void tmc9660_app_EnableDrive(void) {
+	// Set Drive_En is HIGH (PB3)
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
+}
+
+void tmc9660_app_DisableDrive(void) {
+	// Set Drive_En is LOW (PB3)
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
+}
+
 void ERR_Handler(int line) {
 	UART_Printf("\nFailure @ line: %d\n", line);
+	tmc9660_app_ReportConditionAndHalt();
 	while(1) {};
 }
 
@@ -240,67 +560,30 @@ static bool verifyMotorVoltage(uint16_t icID) {
     return true;
 }
 
-/* Helper: Step 2 - Set Motor Type to BLDC */
-static bool setupMotorType(uint16_t icID) {
-    // 3 = 3-Phase BLDC/PMSM
-	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
-    return tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_TYPE, 3);
-}
-
-/* Helper: Step 3 - Set Pole Pairs */
-static bool setupPolePairs(uint16_t icID) {
-    // QBL5704-94-04-032 has 4 poles = 2 pole pairs
-	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
-    return tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_POLE_PAIRS, 2);
-}
-
-/* Helper: Step 4 - Set Commutation Mode to FOC Hall */
-static bool setupCommutationMode(uint16_t icID) {
-    // 6 = FOC based on Hall Sensor feedback
-	// TODO: prefer to expose TMC9660ParamStatus device status reply in TMC-API
-    return tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 6);
-}
-
-/**
- * @brief Configures the TMC9660 for a Hall-based FOC test with the QBL5704 motor.
- * @param icID The identifier for the IC.
- * @return bool True if all steps passed, False otherwise.
- */
 bool tmc9660_app_setupQBL5704BLDCHallFeedbackTest(uint16_t icID) {
-	bool test;
     UART_Printf("\r\n--- Starting QBL5704 Setup ---\r\n");
 
-    // Step 1: Voltage Verification
-    test = verifyMotorVoltage(icID);
-    if (test == false) {
-        UART_Printf("Error: Supply voltage too low (< 8V). Check VS power.\r\n");
-        return false;
-    }
-    UART_Printf("1. Voltage Check: OK\r\n");
+    // 1. Existing Setup (Motor Type, Pole Pairs, etc.)
+    if (!verifyMotorVoltage(icID)) return false;
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_TYPE, 3);
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_MOTOR_POLE_PAIRS, 2);
 
-    // Step 2: Configure Motor Type
-    test = setupMotorType(icID);
-    if (test == false) {
-        UART_Printf("Error: Failed to set Motor Type.\r\n");
-        return false;
-    }
-    UART_Printf("2. Motor Type: BLDC\r\n");
+    // 2. THE FIX: Configure Gate Drive BBM (Deadtime)
+    // BBM_LOW_UVW (235) and BBM_HIGH_UVW (236). Value 60 ≈ 500ns.
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_BREAK_BEFORE_MAKE_TIME_LOW_UVW, 60);
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_BREAK_BEFORE_MAKE_TIME_HIGH_UVW, 60);
 
-    // Step 3: Configure Pole Pairs
-    test = setupPolePairs(icID);
-    if (test == false) {
-        UART_Printf("Error: Failed to set Pole Pairs.\r\n");
-        return false;
-    }
-    UART_Printf("3. Pole Pairs: 2\r\n");
+    // 3. THE FIX: Increase Voltage Limit
+    // Increasing from 240 to 8000 (Default) to ensure PWM generation.
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_OUTPUT_VOLTAGE_LIMIT, 8000);
 
-    // Step 4: Configure Commutation
-    test = setupCommutationMode(icID);
-    if (test == false) {
-        UART_Printf("Error: Failed to set Commutation Mode.\r\n");
-        return false;
-    }
-    UART_Printf("4. Commutation: FOC Hall\r\n");
+    // 4. THE FIX: Bootstrap Pre-charge
+    // Set COMMUTATION_MODE (4) to mode 1 (LOW_SIDE_ON) momentarily.
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 1);
+    HAL_Delay(50);
+
+    // 5. Set final commutation mode
+    tmc9660_param_setParameter(icID, TMC9660_PARAM_COMMUTATION_MODE, 6);
 
     UART_Printf("--- QBL5704 Setup Successful ---\r\n");
     return true;
@@ -416,6 +699,11 @@ int main(void)
 
   HAL_Delay(2000);
 
+  // Handle TMC9660 brownout at HV rail startup
+  tmc9660_app_HoldInResetUntilReady();
+
+  HAL_Delay(1000);
+
   UART_Printf("\r\n--- TMC9660 Boot Configuration ---\r\n");
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
@@ -447,7 +735,7 @@ int main(void)
     if (blStatus != TMC9660_BLSTATUS_OK) {
   	  ERR_Handler(__LINE__);
     }
-    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT1_FIELD, 0); 				/* 0: LDO disabled
+    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT1_FIELD, 3); 				/* 0: LDO disabled
   																				 * 1: 2.5V
   																				 * 2: 3.3V
   																				 * 3: 5.0V <--
@@ -457,7 +745,7 @@ int main(void)
   																				 * 2: 0.75ms
   																				 * 3: 0.37ms
   																				 */
-    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT2_FIELD, 0);				/* 0: LDO disabled
+    reg = field_update16(reg, CONFIG_BOOT_00_POWER_VEXT2_FIELD, 2);				/* 0: LDO disabled
   																				 * 1: 2.5V
   																				 * 2: 3.3V <--
   																				 * 3: 5.0V
@@ -476,8 +764,6 @@ int main(void)
     if (blStatus != TMC9660_BLSTATUS_OK) {
     	  ERR_Handler(__LINE__);
     }
-
-//    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
 
     // 2. UART & ADDRESSES
     // ChipAddr=1, HostAddr=255
@@ -580,18 +866,11 @@ int main(void)
   	  ERR_Handler(__LINE__);
     }
     // TODO: Custom board will have to use Internal Oscillator
-    reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_EXT_NOT_INT_FIELD, 1);	/* 0: Internal 15MHz oscillator
+    // UPDATED TO Internal!!
+    reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_EXT_NOT_INT_FIELD, 0);	/* 0: Internal 15MHz oscillator
   																				 * 1: External clock source selected by EXT_NOT_XTAL.
   																				 */
-    reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_XTAL_CFG_FIELD, 3);		/* 0: RESERVED
-  																				 * 1: 8MHz
-  																				 * 2: RESERVED
-  																				 * 3: 16MHz
-  																				 * 4: RESERVED
-  																				 * 5: 24MHz-25MHz
-  																				 * 6: 32MHz
-  																				 * 7: RESERVED
-  																				 */
+
     reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_EXT_NOT_XTAL_FIELD, 0); /* 0: External oscillator
   																				 * 1: External clock
   																				 */
@@ -601,7 +880,7 @@ int main(void)
   																				 * 2: RESERVED
   																				 * 3: RESERVED
   																				 */
-    reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_RDIV_FIELD, 15);		/* Divider of the PLL input frequency. Must be set to the input frequency in
+    reg = field_update32(reg, CONFIG_BOOT_0C_CLK_SEL_INIT_RDIV_FIELD, 14);		/* Divider of the PLL input frequency. Must be set to the input frequency in
   																				 * MHz minus one.
   																				 * The internal oscillator has a frequency of 15 MHz. For Internal oscillator
   																				 * input (EXT_NOT_INT=0), RDIV must be set to 14.
@@ -628,6 +907,10 @@ int main(void)
      * 	   with a valid PLL configuration and SYS_CLK_DIV=0).
      * Note: The clock configuration should be written with a single WRITE_32 or WRITE_32_INC command.
      */
+    if (!tmc9660_app_VerifyPLLStatus(tmc9660_id)) {
+		UART_Printf("FATAL: PLL Failed to lock at 40MHz. System clock unstable.\r\n");
+		ERR_Handler(__LINE__);
+	}
 
     // 6. APP CONFIG 0 (HALL)
     // Enable=true, U=2, V=3, W=4
@@ -699,7 +982,15 @@ int main(void)
     reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO17_PD_FIELD, 1);     // Pulldown
     reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO18_OUT_EN_FIELD, 0); // Input
     reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO18_PD_FIELD, 1);     // Pulldown
-    reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO5_ANALOG_EN_FIELD, 1); // GPIO5 Analog
+    reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO5_ANALOG_EN_FIELD, 1);
+
+    // Ensure GPIO 2, 3, 4 (Halls) are DIGITAL
+    reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO2_ANALOG_EN_FIELD, 0);
+    reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO3_ANALOG_EN_FIELD, 0);
+    reg = field_update16(reg, CONFIG_BOOT_0B_GPIO_16_18_INIT_GPIO4_ANALOG_EN_FIELD, 0);
+
+
+    blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_WRITE_16, reg, &rVal);
     blStatus = tmc9660_bl_sendCommand(tmc9660_id, TMC9660_BLCMD_SET_ADDRESS, CONFIG_BOOT_0B_GPIO_16_18_INIT, &rVal);
     if (blStatus != TMC9660_BLSTATUS_OK) {
   	  ERR_Handler(__LINE__);
@@ -748,24 +1039,51 @@ int main(void)
   	  UART_Printf("VM: %d.%d\n", mV_voltage_motor / 10, mV_voltage_motor % 10); // unit conversion 100mV -> 1V
     }
 
-    bool test = tmc9660_app_alignQBL5704HallOffset(tmc9660_id);
-    if ( test == true ) {
-    	  UART_Printf("Motor Test Setup Success\n");
-    }
-    else
-    {
-  	  UART_Printf("Motor Test Setup Fail\n");
-    }
+    // 11. SOFTWARE ERROR CLEARING
+    // Clear latched HALL_ERROR (0x20) and any early GDRV faults
+    uint32_t sysMask = 0x00000020;
+    uint32_t gdrvMask = 0xFFFFFFFF;
+    tmc9660_app_ClearErrorsManual(tmc9660_id, sysMask, gdrvMask);
+    HAL_Delay(50);
 
-    // REMOVE FOR BOARD TESTING
-  //  test = tmc9660_app_runQBL5704BLDCHallFeedbackTest(tmc9660_id);
-  //  if ( test == true ) {
-  //	  UART_Printf("Motor Test Run Success\n");
-  //  }
-  //  else
-  //  {
-  //  	  UART_Printf("Motor Test Run Fail\n");
-  //  }
+    // 12. CONFIGURE SAFETY LIMITS
+    // Setting non-zero limits clears the R-only CONFIG_ERROR
+    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_OUTPUT_VOLTAGE_LIMIT, 8000); // Default 25%
+    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_MAX_TORQUE, 1000);           // 1A limit
+    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_BREAK_BEFORE_MAKE_TIME_LOW_UVW, 60); // 500ns Deadtime
+    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_BREAK_BEFORE_MAKE_TIME_HIGH_UVW, 60);
+
+    // 13. BOOTSTRAP PRE-CHARGE
+//    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_COMMUTATION_MODE, 1); // Low-side ON
+    HAL_Delay(50);
+
+    // 14. ENABLE HARDWARE DRIVE (PB3)
+//    tmc9660_app_EnableDrive();
+
+    // 15. START FOC HALL CONTROL
+//    tmc9660_param_setParameter(tmc9660_id, TMC9660_PARAM_COMMUTATION_MODE, 6);
+//    UART_Printf("FOC System Ready.\r\n");
+
+
+//    // UNIT TESTS
+//    tmc9660_app_setupQBL5704BLDCHallFeedbackTest(tmc9660_id);
+//    bool test = tmc9660_app_alignQBL5704HallOffset(tmc9660_id);
+//    if ( test == true ) {
+//    	  UART_Printf("Motor Test Setup Success\n");
+//    }
+//    else
+//    {
+//  	  UART_Printf("Motor Test Setup Fail\n");
+//    }
+//
+//    test = tmc9660_app_runQBL5704BLDCHallFeedbackTest(tmc9660_id);
+//    if ( test == true ) {
+//  	  UART_Printf("Motor Test Run Success\n");
+//    }
+//    else
+//    {
+//    	  UART_Printf("Motor Test Run Fail\n");
+//    }
 
   /* USER CODE END 2 */
 
@@ -773,19 +1091,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-	  if (tmc_detected == true)
-	  	{
-	  	  /* Heartbeat: Slow toggle if chip was found */
-	  	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-	  	  HAL_Delay(500);
-	  	}
-	  	else
-	  	{
-	  	  /* Error: Fast blink if chip was not detected */
-	  	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_1);
-	  	  HAL_Delay(100);
-	  	}
+	  tmc9660_app_DebugStatus(tmc9660_id);
+	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -896,7 +1203,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_12|GPIO_PIN_3
@@ -918,8 +1225,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA4 PA5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+  /*Configure GPIO pins : PA4 PA5 PA15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
